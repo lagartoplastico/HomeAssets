@@ -1,0 +1,31 @@
+﻿<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta name="viewport" content="width=device-width"/> 
+    <link href="~/lib/twitter-bootstrap/css/bootstrap.css" rel="stylesheet" />
+    <title>@ViewBag.Title</title>
+</head>
+<body>
+    <div>
+        <nav>
+            <div>
+                <a asp-controller="home" asp-action="index">
+                    <img src="~/images/logo.jpg" height="60" width="60" />
+                </a>
+            </div>
+            <ul>
+                <li>
+                    <a asp-controller="home" asp-action="ListAll">Listar Todos</a>
+                </li>
+                <li>
+                    <a asp-controller="home" asp-action="Create">Crear Nuevo</a>
+                </li>
+
+            </ul>
+        </nav>
+
+        <div>
+            @RenderBody()
+        </div>
+    </div>
+</body>
+</html>

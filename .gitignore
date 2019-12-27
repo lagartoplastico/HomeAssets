@@ -1,0 +1,5 @@
+.vs
+HomeAssets/bin/
+HomeAssets/obj/
+HomeAssets/Properties/
+HomeAssets/appsettings.development.json

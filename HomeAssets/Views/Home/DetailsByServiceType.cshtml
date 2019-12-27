@@ -1,0 +1,25 @@
+﻿@model IEnumerable<HomeService>
+
+@{
+    ViewBag.Title = "Details by Service";
+}
+
+@if (Model.Count() > 0)
+{
+    <h1> Tipo: @Model.ElementAt(0).ServiceType</h1>
+
+    @foreach (var homeService in Model)
+    {
+        <div>@homeService.Institution</div>
+        <div>@homeService.LeasedTo</div>
+        <div>@homeService.PaymentCriteria</div>
+        <div>@homeService.PaymentId</div>
+        <hr />
+    }
+}
+else
+{
+    <h1> No existe ningun servicio registrado</h1>
+}
+
+<a asp-controller="home" asp-action="index">Regresar</a>

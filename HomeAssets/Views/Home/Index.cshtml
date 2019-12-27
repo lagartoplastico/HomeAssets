@@ -1,0 +1,19 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+<h1>Servicios:</h1>
+
+@foreach (string serviceType in Enum.GetNames(typeof(ServiceTypes)))
+{
+    <a asp-controller="Home" asp-action="DetailsByServiceType" asp-route-type="@serviceType">@serviceType</a>
+    <br />
+}
+
+<hr />
+
+<h1>A nombre de:</h1>
+@foreach (string member in Enum.GetNames(typeof(Members)))
+{
+    <a asp-controller="Home" asp-action="DetailsByMember" asp-route-member="@member">@member</a>
+    <br />
+}
