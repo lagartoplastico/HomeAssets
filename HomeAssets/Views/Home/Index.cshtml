@@ -1,19 +1,74 @@
 ﻿@{
     ViewBag.Title = "Index";
 }
-<h1>Servicios:</h1>
 
-@foreach (string serviceType in Enum.GetNames(typeof(ServiceTypes)))
-{
-    <a asp-controller="Home" asp-action="DetailsByServiceType" asp-route-type="@serviceType">@serviceType</a>
-    <br />
-}
+<h1 class="h3" style="color:black">Servicios:</h1>
+<div class="row justify-content-center">
+    <div class="col-sm-0 col-md-1"></div>
+    <div class="col-sm-12 col-md-10 card-deck">
+        @foreach (string serviceType in Enum.GetNames(typeof(ServiceTypes)))
+        {
+            <div class="card m-2" style="min-width: 13rem; max-width: 13rem;">
+                @switch (serviceType)
+                {
+                    case "Internet":
+                        <a asp-controller="home" asp-action="DetailsByServiceType" asp-route-type="@serviceType">
+                            <img src="~/images/internet.png" class="card-img-top" height="160" />
+                        </a>
+                        break;
+                    case "Agua":
+                        <a asp-controller="home" asp-action="DetailsByServiceType" asp-route-type="@serviceType">
+                            <img src="~/images/agua.png" class="card-img-top" height="160" />
+                        </a>
+                        break;
+                    case "Energia_Electrica":
+                        <a asp-controller="home" asp-action="DetailsByServiceType" asp-route-type="@serviceType">
+                            <img src="~/images/eElec.png" class="card-img-top" height="160" />
+                        </a>
+                        break;
+                    case "Gas_Domiciliario":
+                        <a asp-controller="home" asp-action="DetailsByServiceType" asp-route-type="@serviceType">
+                            <img src="~/images/gDomic.png" class="card-img-top" height="160" />
+                        </a>
+                        break;
+                    default:
+                        <a asp-controller="home" asp-action="DetailsByServiceType" asp-route-type="@serviceType">
+                            <img src="~/images/gDomic.png" class="card-img-top" height="160" />
+                        </a>
+                        break;
+                }
 
-<hr />
+                <div class="card-body text-center">
+                    <a class="text-info" asp-controller="Home" asp-action="DetailsByServiceType"
+                       asp-route-type="@serviceType">@serviceType</a>
+                </div>
+            </div>
+        }
+    </div>
+    <div class="col-sm-0 col-md-1"></div>
+</div>
 
-<h1>A nombre de:</h1>
-@foreach (string member in Enum.GetNames(typeof(Members)))
-{
-    <a asp-controller="Home" asp-action="DetailsByMember" asp-route-member="@member">@member</a>
-    <br />
-}
+<div class="row">
+    <div class="col-6">
+        <h1 class="h3" style="color:black">A nombre de:</h1>
+        <div class="list-group">
+
+            @foreach (string member in Enum.GetNames(typeof(Members)))
+            {
+                <a class="list-group-item text-info" asp-controller="Home" asp-action="DetailsByMember"
+                   asp-route-member="@member">@member</a>
+            }
+        </div>
+    </div>
+
+    <div class="col-6">
+        <h1 class="h3" style="color:black">Ubicación:</h1>
+        <div class="list-group">
+            @foreach (string location in Enum.GetNames(typeof(Locations)))
+            {
+                <a class="list-group-item text-info" asp-controller="Home" asp-action="DetailsByLocation"
+                   asp-route-location="@location">@location</a>
+            }
+        </div>
+    </div>
+</div>

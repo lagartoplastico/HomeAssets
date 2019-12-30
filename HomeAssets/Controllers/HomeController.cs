@@ -32,6 +32,13 @@ namespace HomeAssets.Controllers
             return View(model);
         }
 
+        public ViewResult DetailsByLocation(string location)
+        {
+            var model = homeServiceRepository.GetByLocation(location);
+
+            return View(model);
+        }
+
         public ViewResult ListAll()
         {
             var model = homeServiceRepository.GetAllHomeServices();

@@ -1,19 +1,18 @@
 ﻿@model IEnumerable<HomeService>
 
 @{
-    ViewBag.Title = "Listar Todos";
+    ViewBag.Title = "Details by Location";
 }
 
 @if (Model.Count() > 0)
 {
-    <h1> Todos los servicios:</h1>
+    <h1> Ubicación: @Model.ElementAt(0).Location</h1>
 
     @foreach (var homeService in Model)
     {
         <div>@homeService.ServiceType</div>
-        <div>@homeService.Institution</div>
-        <div>@homeService.Location</div>
         <div>@homeService.LeasedTo</div>
+        <div>@homeService.Institution</div>
         <div>@homeService.PaymentCriteria</div>
         <div>@homeService.PaymentId</div>
         <hr />
@@ -21,7 +20,7 @@
 }
 else
 {
-    <h1> No existe ningun servicio registrado</h1>
+    <h1> No existe ningun servicio registrado en esta ubicación</h1>
 }
 
 <a asp-controller="home" asp-action="index">Regresar</a>

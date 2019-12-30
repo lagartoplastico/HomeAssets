@@ -14,69 +14,78 @@ namespace HomeAssets.Models
                 new HomeService()
                 {
                     Id = 1,
-                    Institution = "YPFB",
+                    Institution = Institutions.Ypfb,
                     LeasedTo = Members.Gary,
                     ServiceType = ServiceTypes.Gas_Domiciliario,
-                    PaymentCriteria = "Codigo de usuario",
-                    PaymentId = "1-00203-J88221"
+                    PaymentCriteria = PaymentCriterias.Codigo_de_cliente,
+                    PaymentId = "1-00203-J88221",
+                    Location = Locations.Senkata
                 },
                 new HomeService()
                 {
                     Id = 2,
-                    Institution = "Tigo",
+                    Institution = Institutions.Tigo,
                     LeasedTo = Members.Joannes,
                     ServiceType = ServiceTypes.Internet,
-                    PaymentCriteria = "Instancia",
-                    PaymentId = "A-0290113"
+                    PaymentCriteria = PaymentCriterias.Instancia,
+                    PaymentId = "A-0290113",
+                    Location= Locations.Tokio
+
                 },
                 new HomeService()
                 {
                     Id = 3,
-                    Institution = "Entel",
+                    Institution = Institutions.Entel,
                     LeasedTo = Members.Gladys,
                     ServiceType = ServiceTypes.Internet,
-                    PaymentCriteria = "Instancia",
-                    PaymentId = "3-5935/32"
+                    PaymentCriteria = PaymentCriterias.Instancia,
+                    PaymentId = "3-5935/32",
+                    Location = Locations.Arguedas
                 },
 
                 new HomeService()
                 {
                     Id = 4,
-                    Institution = "DELAPAZ",
+                    Institution = Institutions.Delapaz,
                     LeasedTo = Members.Adhemar,
                     ServiceType = ServiceTypes.Energia_Electrica,
-                    PaymentCriteria = "Codigo de Cliente",
-                    PaymentId = "3-5935/32"
+                    PaymentCriteria = PaymentCriterias.Numero_de_medidor,
+                    PaymentId = "3-5935/32",
+                    Location = Locations.Tunari
                 },
 
                 new HomeService()
                 {
-                    Id = 4,
-                    Institution = "DELAPAZ",
+                    Id = 5,
+                    Institution = Institutions.Delapaz,
                     LeasedTo = Members.Jose,
                     ServiceType = ServiceTypes.Energia_Electrica,
-                    PaymentCriteria = "Codigo de Cliente",
-                    PaymentId = "3-3335/32"
+                    PaymentCriteria = PaymentCriterias.Codigo_de_cliente,
+                    PaymentId = "3-3335/32",
+                    Location = Locations.Tunari
+
                 },
                 
                 new HomeService()
                 {
-                    Id = 4,
-                    Institution = "Viva",
+                    Id = 6,
+                    Institution = Institutions.Ypfb,
                     LeasedTo = Members.Joannes,
                     ServiceType = ServiceTypes.Gas_Domiciliario,
-                    PaymentCriteria = "Codigo de Cliente",
-                    PaymentId = "3-5935/32"
+                    PaymentCriteria = PaymentCriterias.Codigo_de_cliente,
+                    PaymentId = "3-5935/32",
+                    Location= Locations.Arguedas
                 },
 
                 new HomeService()
                 {
-                    Id = 4,
-                    Institution = "Entel",
+                    Id = 7,
+                    Institution = Institutions.Entel,
                     LeasedTo = Members.Joannes,
                     ServiceType = ServiceTypes.Internet,
-                    PaymentCriteria = "instancia",
-                    PaymentId = "T-121/32"
+                    PaymentCriteria = PaymentCriterias.Instancia,
+                    PaymentId = "T-121/32",
+                    Location = Locations.Arguedas
                 }
         };
         }
@@ -94,6 +103,11 @@ namespace HomeAssets.Models
         public IEnumerable<HomeService> GetByServiceType(string type)
         {
             return GetAllHomeServices().Where(x => x.ServiceType.ToString() == type).OrderBy(k=>k.LeasedTo);
+        }
+
+        public IEnumerable<HomeService> GetByLocation(string location)
+        {
+            return GetAllHomeServices().Where(x => x.Location.ToString() == location).OrderBy(k => k.ServiceType);
         }
 
         public HomeService GetById(int id)
