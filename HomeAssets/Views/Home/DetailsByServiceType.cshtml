@@ -6,21 +6,56 @@
 
 @if (Model.Count() > 0)
 {
-    <h1> Tipo: @Model.ElementAt(0).ServiceType</h1>
+    <h1 class="h3">Tipo:</h1>
+    <h2 class="h1">@Model.ElementAt(0).ServiceType</h2>
 
-    @foreach (var homeService in Model)
-    {
-        <div>@homeService.Institution</div>
-        <div>@homeService.LeasedTo</div>
-        <div>@homeService.Location</div>
-        <div>@homeService.PaymentCriteria</div>
-        <div>@homeService.PaymentId</div>
-        <hr />
-    }
-}
+    <div class="card-deck">
+        @foreach (var homeService in Model)
+        {
+            <div class="card m-2" style="min-width:15rem; max-width:15rem;">
+                <div class="card-header text-center">
+                    @switch (homeService.ServiceType.ToString())
+                    {
+                        case "Internet":
+                            <a href="#">
+                                <img src="~/images/internet.png" class="img-thumbnail rounded-circle"
+                                     width="50" height="50" />
+                            </a>
+                            break;
+                        case "Agua":
+                            <a href="#">
+
+                                <img src="~/images/agua.png" class="img-thumbnail rounded-circle"
+                                     width="50" height="50" />
+                            </a>
+                            break;
+                        case "Energia_Electrica":
+                            <a href="#">
+                                <img src="~/images/eElec.png" class="img-thumbnail rounded-circle"
+                                     width="50" height="50" />
+                            </a>
+                            break;
+                        case "Gas_Domiciliario":
+                            <a href="#">
+                                <img src="~/images/gDomic.png" class="img-thumbnail rounded-circle"
+                                     width="50" height="50" />
+                            </a>
+                            break;
+                    }
+                    @homeService.ServiceType
+                </div>
+                <div class="card-body">
+                    Ubicación: <div class="h6 d-inline">@homeService.Location</div><br />
+                    Institución: <div class="h6 d-inline"> @homeService.Institution</div><br />
+                    A nombre de: <div class="h6 d-inline">@homeService.LeasedTo</div><br />
+                    @homeService.PaymentCriteria:
+                    <div class="text-center h4">@homeService.PaymentId</div>
+                </div>
+            </div>
+        }
+    </div>}
 else
 {
-    <h1> No existe ningun servicio registrado en esta categoria</h1>
+    <h1 class="text-center m-4"> No existe ningun servicio registrado en esta categoria</h1>
 }
-
-<a asp-controller="home" asp-action="index">Regresar</a>
+<a class="btn btn-primary m-2" asp-controller="home" asp-action="index"> Regresar</a>
