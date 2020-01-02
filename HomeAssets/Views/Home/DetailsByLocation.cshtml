@@ -17,32 +17,39 @@
                     @switch (homeService.ServiceType.ToString())
                     {
                         case "Internet":
-                            <a href="#">
+                            <a class="text-decoration-none" style="color:black;" asp-controller="Home"
+                               asp-action="ServiceDetail" asp-route-id="@homeService.Id">
                                 <img src="~/images/internet.png" class="img-thumbnail rounded-circle"
                                      width="50" height="50" />
+                                @homeService.ServiceType
                             </a>
                             break;
                         case "Agua":
-                            <a href="#">
+                            <a class="text-decoration-none" style="color:black;" asp-controller="Home"
+                               asp-action="ServiceDetail" asp-route-id="@homeService.Id">
 
                                 <img src="~/images/agua.png" class="img-thumbnail rounded-circle"
                                      width="50" height="50" />
+                                @homeService.ServiceType
                             </a>
                             break;
                         case "Energia_Electrica":
-                            <a href="#">
+                            <a class="text-decoration-none" style="color:black;" asp-controller="Home"
+                               asp-action="ServiceDetail" asp-route-id="@homeService.Id">
                                 <img src="~/images/eElec.png" class="img-thumbnail rounded-circle"
                                      width="50" height="50" />
+                                @homeService.ServiceType
                             </a>
                             break;
                         case "Gas_Domiciliario":
-                            <a href="#">
+                            <a class="text-decoration-none" style="color:black;" asp-controller="Home"
+                               asp-action="ServiceDetail" asp-route-id="@homeService.Id">
                                 <img src="~/images/gDomic.png" class="img-thumbnail rounded-circle"
                                      width="50" height="50" />
+                                @homeService.ServiceType
                             </a>
                             break;
                     }
-                    @homeService.ServiceType
                 </div>
                 <div class="card-body">
                     Ubicación: <div class="h6 d-inline">@homeService.Location</div><br />
