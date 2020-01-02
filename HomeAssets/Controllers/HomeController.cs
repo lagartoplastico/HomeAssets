@@ -79,5 +79,30 @@ namespace HomeAssets.Controllers
             }
             return View(model);
         }
+
+        [HttpGet]
+        public IActionResult EditHomeService(int id)
+        {
+            var model = homeServiceRepository.GetById(id);
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult EditHomeService(HomeService model)
+        {
+            if (ModelState.IsValid)
+            {
+                homeServiceRepository.UpdateHomeService(model);
+                return RedirectToAction("DetailsByServiceType", "Home", new { type = model.ServiceType.ToString() });
+            }
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult DeleteHomeService(int id)
+        {
+            homeServiceRepository.DeleteHomeService(homeServiceRepository.GetById(id));
+            return RedirectToAction("ListAll", "Home");
+        }
     }
 }

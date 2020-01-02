@@ -30,7 +30,6 @@ namespace HomeAssets.Models
                     PaymentCriteria = PaymentCriterias.Instancia,
                     PaymentId = "A-0290113",
                     Location= Locations.Tokio
-
                 },
                 new HomeService()
                 {
@@ -63,9 +62,8 @@ namespace HomeAssets.Models
                     PaymentCriteria = PaymentCriterias.Codigo_de_cliente,
                     PaymentId = "3-3335/32",
                     Location = Locations.Tunari
-
                 },
-                
+
                 new HomeService()
                 {
                     Id = 6,
@@ -92,7 +90,7 @@ namespace HomeAssets.Models
 
         public IEnumerable<HomeService> GetAllHomeServices()
         {
-            return homeServiceList.OrderBy(k=>k.ServiceType);
+            return homeServiceList.OrderBy(k => k.ServiceType);
         }
 
         public IEnumerable<HomeService> GetByMember(string member)
@@ -102,7 +100,7 @@ namespace HomeAssets.Models
 
         public IEnumerable<HomeService> GetByServiceType(string type)
         {
-            return GetAllHomeServices().Where(x => x.ServiceType.ToString() == type).OrderBy(k=>k.LeasedTo);
+            return GetAllHomeServices().Where(x => x.ServiceType.ToString() == type).OrderBy(k => k.LeasedTo);
         }
 
         public IEnumerable<HomeService> GetByLocation(string location)
@@ -120,6 +118,34 @@ namespace HomeAssets.Models
             newHomeService.Id = homeServiceList.Max(n => n.Id) + 1;
             homeServiceList.Add(newHomeService);
             return newHomeService;
+        }
+
+        public HomeService UpdateHomeService(HomeService changedHomeService)
+        {
+            HomeService homeServiceToChange = homeServiceList
+                .FirstOrDefault(hs => hs.Id == changedHomeService.Id);
+            if (homeServiceToChange != null)
+            {
+                homeServiceToChange.ServiceType = changedHomeService.ServiceType;
+                homeServiceToChange.Institution = changedHomeService.Institution;
+                homeServiceToChange.Location = changedHomeService.Location;
+                homeServiceToChange.LeasedTo = changedHomeService.LeasedTo;
+                homeServiceToChange.PaymentCriteria = changedHomeService.PaymentCriteria;
+                homeServiceToChange.PaymentId = changedHomeService.PaymentId;
+            }
+            return homeServiceToChange;
+        }
+
+        public HomeService DeleteHomeService(HomeService homeService)
+        {
+            HomeService homeServiceToDelete = homeServiceList
+                .FirstOrDefault(hs => hs.Id == homeService.Id);
+            if (homeServiceToDelete != null)
+            {
+                homeServiceList.Remove(homeServiceToDelete);
+                return homeService;
+            }
+            return homeServiceToDelete;
         }
     }
 }

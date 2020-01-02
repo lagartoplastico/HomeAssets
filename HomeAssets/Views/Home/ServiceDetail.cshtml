@@ -49,11 +49,21 @@
                 <div class="text-center h4">@Model.PaymentId</div>
             </div>
             <div class="card-footer text-center">
-                <a class="btn btn-primary" asp-controller="Home" asp-action="Index">Regresar</a>
-                <a class="btn btn-primary" asp-controller="Home" asp-action="Edit"
-                   asp-route-id=@Model.Id>Editar</a>
-                <a class="btn btn-danger" asp-controller="Home" asp-action="Delete"
-                   asp-route-id="@Model.Id">Borrar</a>
+                <form method="post" asp-action="DeleteHomeService" asp-controller="Home" asp-route-id="@Model.Id">
+                    <a class="btn btn-primary" id="backLink_@Model.Id" onclick="history.go(-1)" style="color:white;">Regresar</a>
+                    <a class="btn btn-primary" id="editLink_@Model.Id" asp-controller="Home" asp-action="EditHomeService"
+                       asp-route-id=@Model.Id>Editar</a>
+
+                    <span id="deleteSpan_@Model.Id">
+                        <a href="#" class="btn btn-danger" onclick="confirmDelete(@Model.Id,true)">Borrar</a>
+                    </span>
+                    <span class="mt-1" id="confirmDeleteSpan_@Model.Id" style="display:none;">
+                        <span>¿Borrar Servicio?</span>
+                        <button type="submit" class="btn btn-danger" style="width: 48px;">Si</button>
+                        <a href="#" class="btn btn-primary" onclick="confirmDelete(@Model.Id,false)"
+                           style="width: 48px;">No</a>
+                    </span>
+                </form>
             </div>
         </div>
     </div>
