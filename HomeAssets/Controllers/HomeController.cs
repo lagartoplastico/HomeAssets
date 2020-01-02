@@ -60,7 +60,7 @@ namespace HomeAssets.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(CreateHomeService_vm model)
+        public IActionResult Create(CreateHomeService_vmodel model)
         {
             if (ModelState.IsValid)
             {

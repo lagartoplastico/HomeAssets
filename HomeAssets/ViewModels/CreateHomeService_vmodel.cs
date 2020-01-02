@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace HomeAssets.ViewModels
 {
-    public class CreateHomeService_vm
+    public class CreateHomeService_vmodel
     {
         [Required, Display(Name = "Ubicación")]
         public Locations Location { get; set; }
