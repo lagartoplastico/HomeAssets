@@ -114,5 +114,12 @@ namespace HomeAssets.Models
         {
             return homeServiceList.FirstOrDefault(item => item.Id == id);
         }
+
+        public HomeService AddHomeService(HomeService newHomeService)
+        {
+            newHomeService.Id = homeServiceList.Max(n => n.Id) + 1;
+            homeServiceList.Add(newHomeService);
+            return newHomeService;
+        }
     }
 }

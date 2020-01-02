@@ -46,6 +46,13 @@ namespace HomeAssets.Controllers
             return View(model);
         }
 
+        public ViewResult ServiceDetail(int id)
+        {
+            var model = homeServiceRepository.GetById(id);
+
+            return View(model);
+        }
+
         [HttpGet]
         public ViewResult Create()
         {
@@ -57,7 +64,18 @@ namespace HomeAssets.Controllers
         {
             if (ModelState.IsValid)
             {
-                return RedirectToAction("index");
+                HomeService newHomeService = new HomeService()
+                {
+                    Location = model.Location,
+                    ServiceType = model.ServiceType,
+                    Institution = model.Institution,
+                    LeasedTo = model.LeasedTo,
+                    PaymentCriteria = model.PaymentCriteria,
+                    PaymentId = model.PaymentId
+                };
+
+                homeServiceRepository.AddHomeService(newHomeService);
+                return RedirectToAction("DetailsByServiceType", "Home", new { type = newHomeService.ServiceType });
             }
             return View(model);
         }

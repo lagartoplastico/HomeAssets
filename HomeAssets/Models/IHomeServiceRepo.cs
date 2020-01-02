@@ -12,6 +12,7 @@ namespace HomeAssets.Models
         IEnumerable<HomeService> GetByServiceType(string type);
         IEnumerable<HomeService> GetByMember(string member);
         IEnumerable<HomeService> GetByLocation(string location);
+        public HomeService AddHomeService(HomeService newHomeService);
 
     }
 }
