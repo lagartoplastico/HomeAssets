@@ -11,52 +11,47 @@
     <div class="card-deck">
         @foreach (var homeService in Model)
         {
-            <div class="card m-2" style="min-width:15rem; max-width:15rem;">
-                <div class="card-header text-center">
-                    @switch (homeService.ServiceType.ToString())
-                    {
-                        case "Internet":
-                            <a class="text-decoration-none" style="color:black;" asp-controller="Home"
-                               asp-action="ServiceDetail" asp-route-id="@homeService.Id">
+            <a class="text-decoration-none" style="color:black;" asp-controller="Home"
+               asp-action="ServiceDetail" asp-route-id="@homeService.Id">
+                <div class="card m-2" style="min-width:15rem; max-width:15rem;">
+                    <div class="card-header text-center">
+                        @switch (homeService.ServiceType.ToString())
+                        {
+                            case "Internet":
+
                                 <img src="~/images/internet.png" class="img-thumbnail rounded-circle"
                                      width="50" height="50" />
                                 @homeService.ServiceType
-                            </a>
-                            break;
-                        case "Agua":
-                            <a class="text-decoration-none" style="color:black;" asp-controller="Home"
-                               asp-action="ServiceDetail" asp-route-id="@homeService.Id">
+                                break;
+                            case "Agua":
+
                                 <img src="~/images/agua.png" class="img-thumbnail rounded-circle"
                                      width="50" height="50" />
                                 @homeService.ServiceType
-                            </a>
-                            break;
-                        case "Energia_Electrica":
-                            <a class="text-decoration-none" style="color:black;" asp-controller="Home"
-                               asp-action="ServiceDetail" asp-route-id="@homeService.Id">
+                                break;
+                            case "Energia_Electrica":
+
                                 <img src="~/images/eElec.png" class="img-thumbnail rounded-circle"
                                      width="50" height="50" />
                                 @homeService.ServiceType
-                            </a>
-                            break;
-                        case "Gas_Domiciliario":
-                            <a class="text-decoration-none" style="color:black;" asp-controller="Home"
-                               asp-action="ServiceDetail" asp-route-id="@homeService.Id">
+                                break;
+                            case "Gas_Domiciliario":
+
                                 <img src="~/images/gDomic.png" class="img-thumbnail rounded-circle"
                                      width="50" height="50" />
                                 @homeService.ServiceType
-                            </a>
-                            break;
-                    }
+                                break;
+                        }
+                    </div>
+                    <div class="card-body">
+                        Ubicación: <div class="h6 d-inline">@homeService.Location</div><br />
+                        Institución: <div class="h6 d-inline"> @homeService.Institution</div><br />
+                        A nombre de: <div class="h6 d-inline">@homeService.LeasedTo</div><br />
+                        @homeService.PaymentCriteria:
+                        <div class="text-center h4">@homeService.PaymentId</div>
+                    </div>
                 </div>
-                <div class="card-body">
-                    Ubicación: <div class="h6 d-inline">@homeService.Location</div><br />
-                    Institución: <div class="h6 d-inline"> @homeService.Institution</div><br />
-                    A nombre de: <div class="h6 d-inline">@homeService.LeasedTo</div><br />
-                    @homeService.PaymentCriteria:
-                    <div class="text-center h4">@homeService.PaymentId</div>
-                </div>
-            </div>
+            </a>
         }
     </div>}
 else

@@ -8,36 +8,37 @@
     <div class="col-sm-12 col-md-10 card-deck">
         @foreach (string serviceType in Enum.GetNames(typeof(ServiceTypes)))
         {
-            <div class="card m-2" style="min-width: 13rem; max-width: 13rem;">
-                @switch (serviceType)
-                {
-                    case "Internet":
-                        <a asp-controller="home" asp-action="DetailsByServiceType" asp-route-type="@serviceType">
-                            <img src="~/images/internet.png" class="card-img-top" height="160" />
-                        </a>
-                        break;
-                    case "Agua":
-                        <a asp-controller="home" asp-action="DetailsByServiceType" asp-route-type="@serviceType">
-                            <img src="~/images/agua.png" class="card-img-top" height="160" />
-                        </a>
-                        break;
-                    case "Energia_Electrica":
-                        <a asp-controller="home" asp-action="DetailsByServiceType" asp-route-type="@serviceType">
-                            <img src="~/images/eElec.png" class="card-img-top" height="160" />
-                        </a>
-                        break;
-                    case "Gas_Domiciliario":
-                        <a asp-controller="home" asp-action="DetailsByServiceType" asp-route-type="@serviceType">
-                            <img src="~/images/gDomic.png" class="card-img-top" height="160" />
-                        </a>
-                        break;
-                }
+            <a asp-controller="home" asp-action="DetailsByServiceType" asp-route-type="@serviceType">
+                <div class="card m-2" style="min-width: 13rem; max-width: 13rem;">
+                    @switch (serviceType)
+                    {
+                        case "Internet":
 
-                <div class="card-body text-center">
-                    <a class="text-info" asp-controller="Home" asp-action="DetailsByServiceType"
-                       asp-route-type="@serviceType">@serviceType</a>
+                            <img src="~/images/internet.png" class="card-img-top" height="160" />
+
+                            break;
+                        case "Agua":
+
+                            <img src="~/images/agua.png" class="card-img-top" height="160" />
+
+                            break;
+                        case "Energia_Electrica":
+
+                            <img src="~/images/eElec.png" class="card-img-top" height="160" />
+
+                            break;
+                        case "Gas_Domiciliario":
+
+                            <img src="~/images/gDomic.png" class="card-img-top" height="160" />
+
+                            break;
+                    }
+
+                    <div class="card-body text-center text-info">
+                        @serviceType
+                    </div>
                 </div>
-            </div>
+            </a>
         }
     </div>
     <div class="col-sm-0 col-md-1"></div>
