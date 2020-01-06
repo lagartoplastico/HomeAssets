@@ -1,0 +1,17 @@
+﻿@model int
+
+@{
+    ViewBag.Title = "Not Found";
+}
+
+<div class="alert alert-danger m-3">
+    <h1 class="h4 mb-3">Lo sentimos</h1>
+    <h2 class="h5">
+        La página que busca no pudo ser encontrada.
+    </h2>
+    <h3 class="h6 text-danger text-right" style="font-size:smaller;">
+        StatusCode = @Model
+    </h3>
+</div>
+<a class="btn btn-outline-info ml-3"
+   asp-action="Index" asp-controller="Home" style="width: auto;">Ir al Inicio</a>
