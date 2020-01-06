@@ -14,7 +14,7 @@ namespace HomeAssets.Models
         IEnumerable<HomeService> GetByLocation(string location);
         public HomeService AddHomeService(HomeService newHomeService);
         public HomeService UpdateHomeService(HomeService changedHomeService);
-        public HomeService DeleteHomeService(HomeService changedHomeService);
+        public HomeService DeleteHomeService(HomeService homeService);
 
 
 
