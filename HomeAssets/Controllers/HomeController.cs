@@ -50,6 +50,12 @@ namespace HomeAssets.Controllers
         {
             var model = homeServiceRepository.GetById(id);
 
+            if (model == null)
+            {
+                Response.StatusCode = 404;
+                return View("HS_NotFound", id);
+            }
+
             return View(model);
         }
 
@@ -84,6 +90,13 @@ namespace HomeAssets.Controllers
         public IActionResult EditHomeService(int id)
         {
             var model = homeServiceRepository.GetById(id);
+
+            if (model == null)
+            {
+                Response.StatusCode = 404;
+                return View("HS_NotFound", id);
+            }
+
             return View(model);
         }
 
