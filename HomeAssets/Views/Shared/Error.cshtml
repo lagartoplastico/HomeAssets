@@ -1,0 +1,11 @@
+﻿@model IExceptionHandlerPathFeature
+
+<div class="alert alert-danger m-3">
+    <h1 class="h4">
+        Un error a ocurrido al procesar su solicitud.
+    </h1>
+    <hr />
+    <p class="text-info m-1">@Model.Error.Message</p>
+</div>
+<a class="btn btn-outline-info ml-3"
+   asp-action="Index" asp-controller="Home" style="width: auto;">Ir al Inicio</a>
