@@ -1,11 +1,19 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace HomeAssets.Controllers
 {
     public class ErrorController : Controller
     {
+        private readonly ILogger<ErrorController> logger;
+
+        public ErrorController(ILogger<ErrorController> logger)
+        {
+            this.logger = logger;
+        }
+
         [Route("Error/{statuscode}")]
         public IActionResult StatusCodeHandler(int statuscode)
         {
@@ -25,8 +33,13 @@ namespace HomeAssets.Controllers
         [Route("Error"), AllowAnonymous]
         public IActionResult Error()
         {
-            var model = HttpContext.Features.Get<IExceptionHandlerPathFeature>();
-            return View(model);
+            var currentException = HttpContext.Features.Get<IExceptionHandlerPathFeature>();
+            logger.LogError($"\n{currentException.Path} ---> {currentException.Error.Message}" +
+                $"\n*************************************************************************" +
+                $"\n{currentException.Error.StackTrace}" +
+                $"\n*************************************************************************");
+
+            return View();
         }
     }
 }
