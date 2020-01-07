@@ -1,4 +1,6 @@
-﻿<html xmlns="http://www.w3.org/1999/xhtml">
+﻿@inject SignInManager<IdentityUser> signInManager
+
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta name="viewport" content="width=device-width" />
     <environment include="Development">
@@ -21,24 +23,46 @@
 <body>
     <div class="container">
         <nav class="navbar navbar-expand-sm bg-light navbar-light">
-            <a asp-controller="home" asp-action="index" class="navbar-brand">
+            <a class="navbar-brand" asp-controller="home" asp-action="index">
                 <img src="~/images/logo.png" height="30" width="30" />
             </a>
-            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#collapsibleNavbar">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="collapsibleNavbar">
                 <ul class="navbar-nav">
                     <li class="nav-item  mr-2">
-                        <a asp-controller="home" asp-action="Index" class="nav-link">Inicio</a>
+                        <a class="nav-link" asp-controller="home" asp-action="Index">Inicio</a>
                     </li>
                     <li class="dropdown-divider"></li>
                     <li class="nav-item">
-                        <a asp-controller="home" asp-action="ListAll" class="nav-link">Listar Todos</a>
+                        <a class="nav-link" asp-controller="home" asp-action="ListAll">Listar Todos</a>
                     </li>
                     <li class="nav-item">
-                        <a asp-controller="home" asp-action="Create" class="nav-link">Crear Nuevo</a>
+                        <a class="nav-link" asp-controller="home" asp-action="Create">Crear Nuevo</a>
                     </li>
+                </ul>
+                <ul class="navbar-nav ml-auto">
+                    <li class="dropdown-divider"></li>
+                    @if (signInManager.IsSignedIn(User))
+                    {
+                        <li class="nav-item">
+                            <form asp-controller="Account" asp-action="Logout" method="post">
+                                <button class="nav-link btn btn-link py-0" style="width: auto;">
+                                    Logout @User.Identity.Name
+                                </button>
+                            </form>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Account" asp-action="Register">Regístrate</a>
+                        </li>
+                        <li class="nav-item ml-1">
+                            <a class="nav-link" asp-controller="Account" asp-action="SignIn">Iniciar Sesión</a>
+                        </li>
+                    }
                 </ul>
             </div>
         </nav>

@@ -2,10 +2,11 @@ using HomeAssets.Models;
 using HomeAssets.Models.DataBaseContext;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace HomeAssets
 {
@@ -17,12 +18,19 @@ namespace HomeAssets
         {
             this.config = config;
         }
+
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContextPool<AppDbContext>(options =>
             {
                 options.UseNpgsql(config.GetConnectionString("HomeServiceDB"));
             });
+
+            services.AddIdentity<IdentityUser, IdentityRole>(options =>
+            {
+                options.Password.RequiredLength = 6;
+                options.Password.RequireNonAlphanumeric = true;
+            }).AddEntityFrameworkStores<AppDbContext>();
 
             services.AddMvc(options =>
             {
@@ -46,6 +54,7 @@ namespace HomeAssets
             }
 
             app.UseStaticFiles();
+            app.UseAuthentication();
             app.UseMvcWithDefaultRoute();
         }
     }
