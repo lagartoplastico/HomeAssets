@@ -1,13 +1,12 @@
 ﻿@model IEnumerable<HomeService>
 
 @{
-    ViewBag.Title = "Details by Member";
+    ViewBag.Title = "A nombre de";
 }
 
 @if (Model.Count() > 0)
 {
-    <h1 class="h3">A nombre de:</h1>
-    <h2 class="h1">@Model.ElementAt(0).LeasedTo</h2>
+    <h1 class="font-italic my-3">A nombre de: @Model.ElementAt(0).LeasedTo</h1>
 
     <div class="card-deck">
         @foreach (var homeService in Model)

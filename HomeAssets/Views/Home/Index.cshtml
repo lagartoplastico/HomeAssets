@@ -1,8 +1,8 @@
 ﻿@{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Home";
 }
 
-<h1 class="h3" style="color:black">Servicios:</h1>
+<h1 class="font-italic mt-3">Servicios:</h1>
 <div class="row justify-content-center">
     <div class="col-sm-0 col-md-1"></div>
     <div class="col-sm-12 col-md-10 card-deck">
@@ -46,7 +46,7 @@
 
 <div class="row">
     <div class="col-6">
-        <h1 class="h3" style="color:black">A nombre de:</h1>
+        <h1 class="font-italic mt-3">A nombre de:</h1>
         <div class="list-group">
 
             @foreach (string member in Enum.GetNames(typeof(Members)))
@@ -58,7 +58,7 @@
     </div>
 
     <div class="col-6">
-        <h1 class="h3" style="color:black">Ubicación:</h1>
+        <h1 class="font-italic mt-3">Ubicación:</h1>
         <div class="list-group">
             @foreach (string location in Enum.GetNames(typeof(Locations)))
             {
