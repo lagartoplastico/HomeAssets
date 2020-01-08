@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using HomeAssets.Models.Attributes;
+using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
 namespace HomeAssets.ViewModels
@@ -15,6 +16,7 @@ namespace HomeAssets.ViewModels
         [RegularExpression(@"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$",
             ErrorMessage = "Formato invalido de correo electrónico")]
         [Remote("IsEmailInUse", "Account")]
+        [ValidEmailDomain]
         public string Email { get; set; }
 
         [Required, Display(Name = "Contraseña")]
