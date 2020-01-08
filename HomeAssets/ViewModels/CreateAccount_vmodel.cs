@@ -1,4 +1,5 @@
-﻿using HomeAssets.Models.Attributes;
+﻿using HomeAssets.Models;
+using HomeAssets.Models.Attributes;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
@@ -18,6 +19,9 @@ namespace HomeAssets.ViewModels
         [Remote("IsEmailInUse", "Account")]
         [ValidEmailDomain]
         public string Email { get; set; }
+
+        [Display(Name = "Genero")]
+        public Genders Gender { get; set; } = Genders.Ninguno;
 
         [Required, Display(Name = "Contraseña")]
         [DataType(DataType.Password)]

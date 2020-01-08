@@ -1,4 +1,5 @@
-﻿using HomeAssets.ViewModels;
+﻿using HomeAssets.Models.ExtendedIdentity;
+using HomeAssets.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -10,11 +11,11 @@ namespace HomeAssets.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly UserManager<IdentityUser> userManager;
-        private readonly SignInManager<IdentityUser> signInManager;
+        private readonly UserManager<App_IdentityUser> userManager;
+        private readonly SignInManager<App_IdentityUser> signInManager;
 
-        public AccountController(UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager)
+        public AccountController(UserManager<App_IdentityUser> userManager,
+            SignInManager<App_IdentityUser> signInManager)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
@@ -31,10 +32,11 @@ namespace HomeAssets.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser()
+                var user = new App_IdentityUser()
                 {
                     UserName = model.Username,
-                    Email = model.Email
+                    Email = model.Email,
+                    Gender = model.Gender
                 };
 
                 var result = await userManager.CreateAsync(user, model.Password);
@@ -104,7 +106,7 @@ namespace HomeAssets.Controllers
         {
             if (ModelState.IsValid)
             {
-                IdentityUser user;
+                App_IdentityUser user;
 
                 if (model.UserOrEmail.Contains('@'))
                 {

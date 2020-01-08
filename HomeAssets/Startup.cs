@@ -1,5 +1,6 @@
 using HomeAssets.Models;
 using HomeAssets.Models.DataBaseContext;
+using HomeAssets.Models.ExtendedIdentity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -28,7 +29,7 @@ namespace HomeAssets
                 options.UseNpgsql(config.GetConnectionString("HomeServiceDB"));
             });
 
-            services.AddIdentity<IdentityUser, IdentityRole>(options =>
+            services.AddIdentity<App_IdentityUser, IdentityRole>(options =>
             {
                 options.Password.RequiredLength = 6;
                 options.Password.RequireNonAlphanumeric = true;
