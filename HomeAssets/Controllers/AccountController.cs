@@ -53,6 +53,38 @@ namespace HomeAssets.Controllers
             return View(model);
         }
 
+        [AcceptVerbs("Get", "Post")]
+        [AllowAnonymous]
+        public async Task<IActionResult> IsUsernameInUse(string username)
+        {
+            var user = await userManager.FindByNameAsync(username);
+
+            if (user == null)
+            {
+                return Json(true);
+            }
+            else
+            {
+                return Json($"El nombre de usuario '{username}' ya está en uso");
+            }
+        }
+
+        [AcceptVerbs("Get", "Post")]
+        [AllowAnonymous]
+        public async Task<IActionResult> IsEmailInUse(string email)
+        {
+            var user = await userManager.FindByEmailAsync(email);
+
+            if (user == null)
+            {
+                return Json(true);
+            }
+            else
+            {
+                return Json($"El correo '{email}' ya está en uso");
+            }
+        }
+
         [HttpPost]
         public async Task<IActionResult> Logout()
         {
