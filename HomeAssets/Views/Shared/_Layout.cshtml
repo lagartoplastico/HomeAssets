@@ -48,9 +48,12 @@
                     @if (signInManager.IsSignedIn(User))
                     {
                         <li class="nav-item">
-                            <form asp-controller="Account" asp-action="Logout" method="post">
-                                <button class="nav-link btn btn-link py-0" style="width: auto;">
-                                    Logout @User.Identity.Name
+                            <form class="m-0" asp-controller="Account" asp-action="Logout" method="post">
+                                <button class="nav-link btn btn-link py-0" type="submit" style="width:auto">
+                                    Logout:
+                                    <p class="d-inline font-weight-bold font-italic">
+                                        @User.Identity.Name
+                                    </p>
                                 </button>
                             </form>
                         </li>
@@ -61,7 +64,7 @@
                             <a class="nav-link" asp-controller="Account" asp-action="Register">Regístrate</a>
                         </li>
                         <li class="nav-item ml-1">
-                            <a class="nav-link" asp-controller="Account" asp-action="SignIn">Iniciar Sesión</a>
+                            <a class="nav-link" asp-controller="Account" asp-action="Login">Iniciar Sesión</a>
                         </li>
                     }
                 </ul>

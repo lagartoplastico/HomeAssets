@@ -1,4 +1,5 @@
 ﻿using HomeAssets.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -19,13 +20,13 @@ namespace HomeAssets.Controllers
             this.signInManager = signInManager;
         }
 
-        [HttpGet]
+        [HttpGet, AllowAnonymous]
         public IActionResult Register()
         {
             return View();
         }
 
-        [HttpPost]
+        [HttpPost, AllowAnonymous]
         public async Task<IActionResult> Register(CreateAccount_vmodel model)
         {
             if (ModelState.IsValid)
@@ -57,17 +58,17 @@ namespace HomeAssets.Controllers
         {
             await signInManager.SignOutAsync();
 
-            return RedirectToAction("SignIn", "Account");
+            return RedirectToAction("Login", "Account");
         }
 
-        [HttpGet]
-        public IActionResult SignIn()
+        [HttpGet, AllowAnonymous]
+        public IActionResult Login()
         {
             return View();
         }
 
-        [HttpPost]
-        public async Task<IActionResult> SignIn(SignIn_vmodel model)
+        [HttpPost, AllowAnonymous]
+        public async Task<IActionResult> Login(SignIn_vmodel model, string returnUrl)
         {
             if (ModelState.IsValid)
             {
@@ -88,6 +89,11 @@ namespace HomeAssets.Controllers
                                                                          model.PersistentCookies, false);
                     if (result.Succeeded)
                     {
+                        if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+                        {
+                            return LocalRedirect(returnUrl);
+                        }
+
                         return RedirectToAction("Index", "Home");
                     }
                 }

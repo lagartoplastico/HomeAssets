@@ -1,5 +1,6 @@
 ﻿using HomeAssets.Models;
 using HomeAssets.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HomeAssets.Controllers
