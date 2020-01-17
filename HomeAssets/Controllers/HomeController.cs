@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HomeAssets.Controllers
 {
+    [Authorize(Policy = "ServiceViewers")]
     public class HomeController : Controller
     {
         private readonly IHomeServiceRepo homeServiceRepository;
@@ -15,6 +16,12 @@ namespace HomeAssets.Controllers
         }
 
         public ViewResult Index()
+        {
+            return View();
+        }
+
+        [AllowAnonymous]
+        public ViewResult WithoutClaims()
         {
             return View();
         }
@@ -60,13 +67,13 @@ namespace HomeAssets.Controllers
             return View(model);
         }
 
-        [HttpGet]
+        [HttpGet, Authorize(Policy = "ServiceManagers")]
         public ViewResult Create()
         {
             return View();
         }
 
-        [HttpPost]
+        [HttpPost, Authorize(Policy = "ServiceManagers")]
         public IActionResult Create(CreateHomeService_vmodel model)
         {
             if (ModelState.IsValid)
@@ -87,7 +94,7 @@ namespace HomeAssets.Controllers
             return View(model);
         }
 
-        [HttpGet]
+        [HttpGet, Authorize(Policy = "ServiceManagers")]
         public IActionResult EditHomeService(int id)
         {
             var model = homeServiceRepository.GetById(id);
@@ -101,7 +108,7 @@ namespace HomeAssets.Controllers
             return View(model);
         }
 
-        [HttpPost]
+        [HttpPost, Authorize(Policy = "ServiceManagers")]
         public IActionResult EditHomeService(HomeService model)
         {
             if (ModelState.IsValid)
@@ -112,7 +119,7 @@ namespace HomeAssets.Controllers
             return View(model);
         }
 
-        [HttpPost]
+        [HttpPost, Authorize(Policy = "ServiceManagers")]
         public IActionResult DeleteHomeService(int id)
         {
             homeServiceRepository.DeleteHomeService(homeServiceRepository.GetById(id));

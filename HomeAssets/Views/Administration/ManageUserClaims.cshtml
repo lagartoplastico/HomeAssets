@@ -1,0 +1,34 @@
+﻿@model UserClaims_vmodel
+
+@{
+    ViewBag.Title = "Claims de usuario";
+}
+
+<h1 class="font-italic mt-3">Claims de usuario</h1>
+<form method="post">
+    <div class="card">
+        <div class="card-header">
+            <h2>usuario: @Model.UserName</h2>
+        </div>
+        <div class="card-body">
+            <input type="hidden" asp-for="@Model.UserId" value="@Model.UserId" />
+            <input type="hidden" asp-for="@Model.UserName" value="@Model.UserName" />
+            @for (int i = 0; i < Model.Claims.Count(); i++)
+            {
+                <div class="form-check m-1">
+                    <input type="hidden" asp-for="@Model.Claims[i].ClaimType" />
+                    <input type="hidden" asp-for="@Model.Claims[i].ClaimValue" />
+                    <input class="form-check-input" asp-for="@Model.Claims[i].IsSelected" />
+                    <label class="form-check-label" asp-for="@Model.Claims[i].IsSelected">
+                        <b style="color:darkblue">@Model.Claims[i].ClaimType</b>: @Model.Claims[i].ClaimValue
+                    </label>
+                </div>
+                <div asp-validation-summary="All" class="text-danger"></div>
+            }
+        </div>
+        <div class="card-footer">
+            <input class="btn btn-primary" type="submit" value="Actualizar" />
+            <a class="btn btn-primary" asp-action="EditUser" asp-controller="Administration" asp-route-id="@Model.UserId">Cancelar</a>
+        </div>
+    </div>
+</form>

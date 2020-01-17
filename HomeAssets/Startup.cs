@@ -43,6 +43,24 @@ namespace HomeAssets
                 options.Filters.Add(new AuthorizeFilter(policy));
             });
 
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("AccountManagers", 
+                    policy => policy.RequireClaim("Role", new string[] { "Administrador CON permisos de modificación" }));
+                options.AddPolicy("AccountViewers", 
+                    policy => policy.RequireClaim("Role", new string[] { "Administrador SIN permisos de modificación",
+                                                                         "Administrador CON permisos de modificación"}));
+                options.AddPolicy("ServiceManagers", 
+                    policy => policy.RequireClaim("Role", new string[] { "Usuario CON permisos de modificación",
+                                                                         "Administrador SIN permisos de modificación", 
+                                                                         "Administrador CON permisos de modificación"}));
+                options.AddPolicy("ServiceViewers",
+                    policy => policy.RequireClaim("Role", new string[] { "Usuario SIN permisos de modificación",
+                                                                         "Usuario CON permisos de modificación",
+                                                                         "Administrador SIN permisos de modificación",
+                                                                         "Administrador CON permisos de modificación"}));
+            });
+
             //services.AddSingleton<IHomeServiceRepo, MockHomeServiceRepo>();
             services.AddScoped<IHomeServiceRepo, NpgsqlHomeServiceRepo>();
         }

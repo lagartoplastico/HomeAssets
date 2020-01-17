@@ -1,0 +1,82 @@
+﻿@model IEnumerable<App_IdentityUser>
+
+@{
+    ViewBag.Title = "Lista de usuarios";
+}
+
+<h1 class="font-italic my-3">Administración</h1>
+
+<div class="row justify-content-center">
+    <div class="col-sm-12">
+
+        <h2 class="font-italic my-2">Lista de usuarios:</h2>
+        <div class="mb-4">
+            <a class="btn btn-primary"
+               asp-action="Register" asp-controller="Account" style="width: auto;">
+                Crear nuevo usuario
+            </a>
+        </div>
+
+        @if (Model.Any())
+        {
+
+            <div class="card-group justify-content-center">
+                @foreach (var user in Model)
+                {
+                    <form class="ml-2" method="post" asp-action="DeleteUser" asp-controller="Administration" asp-route-id="@user.Id">
+                        <div class="card" style="min-width:20rem; max-width:20rem;">
+                            <div class="card-header" style="font-family:Calibri; font-size:small;">
+                                <div class="text-info text-right" font-size:large;">@user.Id.Split('-').Last()</div>
+                                <div class="h1 text-dark font-weight-bold" style="font-family:Century;">@user.UserName</div>
+                            </div>
+
+                            <div class="card-body row text-center" style="min-height:10rem;">
+                                <div class="col-12">
+                                    @switch (user.Gender.ToString())
+                                    {
+                                        case "Hombre":<img class="mb-2" src="~/images/man.png" width="45" height="45" />
+                                            break;
+                                        case "Mujer": <img class="mb-2" src="~/images/woman.png" width="45" height="45" />
+                                            break;
+                                        default: <img class="mb-2" src="~/images/noGender.png" width="45" height="45" />
+                                            break;
+                                    }
+                                    <div class="text-dark font-italic" style="font-family:Calibri; font-size:large  ;">
+                                        @user.Email.Split('@')[0]<b class="font-weight-bold" style="color:red;">@@</b>@user.Email.Split('@')[1]
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card-footer">
+                                <a class="btn btn-primary p-1 ml-n1" id="editLink_@user.Id" style="width: 100px;"
+                                   asp-action="EditUser" asp-controller="Administration" asp-route-id="@user.Id">
+                                    Editar
+                                </a>
+
+                                <span id="deleteSpan_@user.Id">
+                                    <a href="#" class="btn btn-danger p-1" onclick="confirmDelete('@user.Id', true)" style="width: 100px;">Borrar</a>
+                                </span>
+                                <span class="mt-1" id="confirmDeleteSpan_@user.Id" style="display:none;">
+                                    <span class="text-danger">¿Borrar Usuario?</span>
+                                    <button type="submit" class="btn btn-danger p-1" style="width: 48px;">Si</button>
+                                    <a href="#" class="btn btn-primary p-1" onclick="confirmDelete('@user.Id', false)"
+                                       style="width: 48px;">No</a>
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+                }
+            </div>
+
+        }
+        else
+        {
+            <h2 class="text-center m-4"> No existe ningun usuario registrado</h2>
+        }
+    </div>
+</div>
+
+@section Scripts{
+
+    <script src="~/js/functions.js"></script>
+}

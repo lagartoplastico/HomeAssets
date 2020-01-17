@@ -43,6 +43,11 @@ namespace HomeAssets.Controllers
 
                 if (result.Succeeded)
                 {
+                    if (signInManager.IsSignedIn(User))
+                    {
+                        return RedirectToAction("ListUsers", "Administration");
+                    }
+
                     await signInManager.SignInAsync(user, isPersistent: false);
                     return RedirectToAction("Index", "Home");
                 }
@@ -121,7 +126,7 @@ namespace HomeAssets.Controllers
                 {
                     var result = await signInManager.PasswordSignInAsync(user, model.Password,
                                                                          model.PersistentCookies, false);
-                    if (result.Succeeded)
+                    if (result.Succeeded && (await userManager.GetClaimsAsync(user)).Count != 0)
                     {
                         if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
                         {
@@ -130,10 +135,20 @@ namespace HomeAssets.Controllers
 
                         return RedirectToAction("Index", "Home");
                     }
+                    else if (result.Succeeded)
+                    {
+                        return RedirectToAction("WithoutClaims", "Home");
+                    }
                 }
                 ModelState.AddModelError(string.Empty, " Intento invalido de inicio de sesión");
             }
             return View(model);
+        }
+
+        [AllowAnonymous]
+        public IActionResult AccessDenied()
+        {
+            return View();
         }
     }
 }

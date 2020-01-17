@@ -14,7 +14,7 @@ namespace HomeAssets.Controllers
             this.logger = logger;
         }
 
-        [Route("Error/{statuscode}")]
+        [Route("Error/{statuscode}"), AllowAnonymous]
         public IActionResult StatusCodeHandler(int statuscode)
         {
             switch (statuscode)
@@ -27,7 +27,7 @@ namespace HomeAssets.Controllers
                     break;
             }
 
-            return View("NotFound", statuscode);
+            return View("NotFound", $"StatusCode={statuscode}");
         }
 
         [Route("Error"), AllowAnonymous]

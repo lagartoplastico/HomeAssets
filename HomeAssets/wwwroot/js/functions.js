@@ -1,5 +1,16 @@
-﻿function confirmDelete(uniqueId, isDeleteClicked) {
-    var delelteSpan = "deleteSpan_" + uniqueId
+﻿var lastUniqueId = null
+
+function confirmDelete(uniqueId, isDeleteClicked) {
+
+    if (lastUniqueId != null) {
+        $('#' + "deleteSpan_" + lastUniqueId).show()
+        $('#' + "editLink_" + lastUniqueId).show()
+        $('#' + "backLink_" + lastUniqueId).show()
+
+        $('#' + "confirmDeleteSpan_" + lastUniqueId).hide()
+    }
+
+    var delelteSpan = "deleteSpan_" + uniqueId;
     var confirmDeleteSpan = "confirmDeleteSpan_" + uniqueId
     var editLink = "editLink_" + uniqueId
     var backLink = "backLink_" + uniqueId
@@ -17,4 +28,6 @@
 
         $('#' + confirmDeleteSpan).hide()
     }
+
+    lastUniqueId = uniqueId
 }

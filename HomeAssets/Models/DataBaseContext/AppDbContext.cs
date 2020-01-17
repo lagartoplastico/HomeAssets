@@ -1,6 +1,7 @@
 ﻿using HomeAssets.Models.ExtendedIdentity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace HomeAssets.Models.DataBaseContext
 {
@@ -11,5 +12,15 @@ namespace HomeAssets.Models.DataBaseContext
         }
 
         public DbSet<HomeService> HomeServices { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+
+            foreach (var foreignKey in builder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
+            {
+                foreignKey.DeleteBehavior = DeleteBehavior.Restrict;
+            }
+        }
     }
 }
