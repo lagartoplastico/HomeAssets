@@ -1,5 +1,7 @@
 ﻿@inject SignInManager<App_IdentityUser> signInManager
 
+@inject IAuthorizationService authorizationService
+
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta name="viewport" content="width=device-width" />
@@ -30,18 +32,25 @@
 <body>
     <div class="container">
         <nav class="navbar navbar-expand-sm bg-light navbar-light">
-            <a class="navbar-brand" asp-controller="home" asp-action="index">
+            @if (signInManager.IsSignedIn(User) && (await authorizationService.AuthorizeAsync(User, "ServiceViewers")).Succeeded)
+            {
+                <a class="navbar-brand" asp-controller="home" asp-action="index">
+                    <img src="~/images/logo.png" height="30" width="30" />
+                </a>
+            }
+            else
+            {
                 <img src="~/images/logo.png" height="30" width="30" />
-            </a>
+            }
 
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="collapsibleNavbar">
 
-                @if (signInManager.IsSignedIn(User))
-                {
-                    <ul class="navbar-nav">
+                <ul class="navbar-nav">
+                    @if (signInManager.IsSignedIn(User) && (await authorizationService.AuthorizeAsync(User, "ServiceViewers")).Succeeded)
+                    {
                         <li class="nav-item  mr-2">
                             <a class="nav-link" asp-controller="home" asp-action="Index">Inicio</a>
                         </li>
@@ -49,18 +58,24 @@
                         <li class="nav-item">
                             <a class="nav-link" asp-controller="home" asp-action="ListAll">Listar Servicios</a>
                         </li>
+                    }
+                    @if (signInManager.IsSignedIn(User) && (await authorizationService.AuthorizeAsync(User, "ServiceManagers")).Succeeded)
+                    {
                         <li class="nav-item">
                             <a class="nav-link" asp-controller="home" asp-action="Create">Crear Servicio</a>
                         </li>
-                    </ul>
-                }
+                    }
+                </ul>
                 <ul class="navbar-nav ml-auto">
                     <li class="dropdown-divider"></li>
                     @if (signInManager.IsSignedIn(User))
                     {
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="administration" asp-action="ListUsers">Administración</a>
-                        </li>
+                        @if ((await authorizationService.AuthorizeAsync(User, "AccountViewers")).Succeeded)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="administration" asp-action="ListUsers">Administración</a>
+                            </li>
+                        }
                         <li class="nav-item">
                             <form class="m-0" asp-controller="Account" asp-action="Logout" method="post">
                                 <button class="nav-link btn btn-link border-0" type="submit" style="width:auto">

@@ -4,38 +4,36 @@
 
 <h1 class="font-italic mt-3">Servicios:</h1>
 <div class="row justify-content-center">
-    <div class="col-sm-0 col-md-1"></div>
-    <div class="col-sm-12 col-md-10 card-deck">
+    <div class="col-sm-12 card-deck justify-content-center">
         @foreach (string serviceType in Enum.GetNames(typeof(ServiceTypes)))
         {
             <a asp-controller="home" asp-action="DetailsByServiceType" asp-route-type="@serviceType">
-                <div class="card m-2" style="min-width: 13rem; max-width: 13rem;">
+                <div class="card m-2" style="min-width: 11rem; max-width: 11rem; min-height: 12rem; max-height: 12rem;">
                     @switch (serviceType)
                     {
                         case "Internet":
-
-                            <img src="~/images/internet.png" class="card-img-top" height="160" />
-
+                            <img src="~/images/internet.png" class="card-img-top" height="140" />
                             break;
                         case "Agua":
-
-                            <img src="~/images/agua.png" class="card-img-top" height="160" />
-
+                            <img src="~/images/agua.png" class="card-img-top" height="140" />
                             break;
                         case "Energia_Electrica":
-
-                            <img src="~/images/eElec.png" class="card-img-top" height="160" />
-
+                            <img src="~/images/eElec.png" class="card-img-top" height="140" />
                             break;
                         case "Gas_Domiciliario":
-
-                            <img src="~/images/gDomic.png" class="card-img-top" height="160" />
-
+                            <img src="~/images/gDomic.png" class="card-img-top" height="140" />
                             break;
                     }
 
                     <div class="card-body text-center text-info">
-                        @serviceType
+                        @if (serviceType.Split('_').Count() > 1)
+                        {
+                            <h4 style="font-size:large; font-family:Calibri;">@serviceType.Split('_')[0] @serviceType.Split('_')[1]</h4>
+                        }
+                        else
+                        {
+                            <h4 style="font-size:large; font-family:Calibri;">@serviceType</h4>
+                        }
                     </div>
                 </div>
             </a>
@@ -46,24 +44,27 @@
 
 <div class="row">
     <div class="col-6">
-        <h1 class="font-italic mt-3">A nombre de:</h1>
+        <h1 class="font-italic mt-2">A nombre de:</h1>
         <div class="list-group">
-
             @foreach (string member in Enum.GetNames(typeof(Members)))
             {
                 <a class="list-group-item text-info" asp-controller="Home" asp-action="DetailsByMember"
-                   asp-route-member="@member">@member</a>
+                   asp-route-member="@member">
+                    <h4 style="font-size:large; font-family:Calibri;">@member</h4>
+                </a>
             }
         </div>
     </div>
 
     <div class="col-6">
-        <h1 class="font-italic mt-3">Ubicación:</h1>
+        <h1 class="font-italic mt-2">Ubicación:</h1>
         <div class="list-group">
             @foreach (string location in Enum.GetNames(typeof(Locations)))
             {
                 <a class="list-group-item text-info" asp-controller="Home" asp-action="DetailsByLocation"
-                   asp-route-location="@location">@location</a>
+                   asp-route-location="@location">
+                    <h4 style="font-size:large; font-family:Calibri;">@location</h4>
+                </a>
             }
         </div>
     </div>

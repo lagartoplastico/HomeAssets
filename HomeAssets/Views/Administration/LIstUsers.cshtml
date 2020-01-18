@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<App_IdentityUser>
+@inject IAuthorizationService authorizationService
 
 @{
     ViewBag.Title = "Lista de usuarios";
@@ -47,22 +48,25 @@
                                 </div>
                             </div>
 
-                            <div class="card-footer">
-                                <a class="btn btn-primary p-1 ml-n1" id="editLink_@user.Id" style="width: 100px;"
-                                   asp-action="EditUser" asp-controller="Administration" asp-route-id="@user.Id">
-                                    Editar
-                                </a>
+                            @if ((await authorizationService.AuthorizeAsync(User, "AccountManagers")).Succeeded)
+                            {
+                                <div class="card-footer">
+                                    <a class="btn btn-primary p-1 ml-n1" id="editLink_@user.Id" style="width: 100px;"
+                                       asp-action="EditUser" asp-controller="Administration" asp-route-id="@user.Id">
+                                        Editar
+                                    </a>
 
-                                <span id="deleteSpan_@user.Id">
-                                    <a href="#" class="btn btn-danger p-1" onclick="confirmDelete('@user.Id', true)" style="width: 100px;">Borrar</a>
-                                </span>
-                                <span class="mt-1" id="confirmDeleteSpan_@user.Id" style="display:none;">
-                                    <span class="text-danger">¿Borrar Usuario?</span>
-                                    <button type="submit" class="btn btn-danger p-1" style="width: 48px;">Si</button>
-                                    <a href="#" class="btn btn-primary p-1" onclick="confirmDelete('@user.Id', false)"
-                                       style="width: 48px;">No</a>
-                                </span>
-                            </div>
+                                    <span id="deleteSpan_@user.Id">
+                                        <a href="#" class="btn btn-danger p-1" onclick="confirmDelete('@user.Id', true)" style="width: 100px;">Borrar</a>
+                                    </span>
+                                    <span class="mt-1" id="confirmDeleteSpan_@user.Id" style="display:none;">
+                                        <span class="text-danger">¿Borrar Usuario?</span>
+                                        <button type="submit" class="btn btn-danger p-1" style="width: 48px;">Si</button>
+                                        <a href="#" class="btn btn-primary p-1" onclick="confirmDelete('@user.Id', false)"
+                                           style="width: 48px;">No</a>
+                                    </span>
+                                </div>
+                            }
                         </div>
                     </form>
                 }
