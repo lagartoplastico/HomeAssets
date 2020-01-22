@@ -42,9 +42,12 @@
                                         default: <img class="mb-2" src="~/images/noGender.png" width="45" height="45" />
                                             break;
                                     }
-                                    <div class="text-dark font-italic" style="font-family:Calibri; font-size:large  ;">
-                                        @user.Email.Split('@')[0]<b class="font-weight-bold" style="color:red;">@@</b>@user.Email.Split('@')[1]
-                                    </div>
+                                    @if (user.Email != null)
+                                    {
+                                        <div class="text-dark font-italic" style="font-family:Calibri; font-size:large  ;">
+                                            @user.Email.Split('@')[0]<b class="font-weight-bold" style="color:red;">@@</b>@user.Email.Split('@')[1]
+                                        </div>
+                                    }
                                 </div>
                             </div>
 

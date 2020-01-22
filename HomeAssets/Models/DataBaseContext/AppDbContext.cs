@@ -17,6 +17,8 @@ namespace HomeAssets.Models.DataBaseContext
         {
             base.OnModelCreating(builder);
 
+            builder.Seed();
+
             foreach (var foreignKey in builder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
             {
                 foreignKey.DeleteBehavior = DeleteBehavior.Restrict;
