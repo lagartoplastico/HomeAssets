@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Authentication;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace HomeAssets.ViewModels
 {
@@ -13,5 +15,8 @@ namespace HomeAssets.ViewModels
 
         [Display(Name = "¿Recordarme?")]
         public bool PersistentCookies { get; set; }
+
+        public string ReturnUrl { get; set; }
+        public IList<AuthenticationScheme> ExternalLogins { get; set; }
     }
 }

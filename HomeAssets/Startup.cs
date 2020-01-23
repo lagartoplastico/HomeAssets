@@ -43,6 +43,13 @@ namespace HomeAssets
                 options.Filters.Add(new AuthorizeFilter(policy));
             });
 
+            services.AddAuthentication()
+                .AddGoogle(options =>
+                {
+                    options.ClientId = "408086448053-bh9tgdh72nlo48lm58ci4ahfdk2b1ec3.apps.googleusercontent.com";
+                    options.ClientSecret = "GWYSt42gcJ9nH41Qr1Db-96b";
+                });
+
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("AccountManagers", 

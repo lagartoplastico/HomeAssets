@@ -3,30 +3,68 @@
 @{
     ViewBag.Title = "Inicio de Sesión";
 }
-
 <h1 class="font-italic mt-3">Inicio de Sesión</h1>
 
-<div class="row justify-content-center mt-5">
-    <form class="col-5 justify-content-center" method="post">
-        <div class="form-group">
-            <label class="font-weight-bold" asp-for="UserOrEmail"></label>
-            <input class="form-control" placeholder="Usuario o Email" asp-for="UserOrEmail" />
-            <span class="text-danger" asp-validation-for="UserOrEmail"></span>
-        </div>
-        <div class="form-group">
-            <label class="font-weight-bold" asp-for="Password"></label>
-            <input class="form-control" placeholder="Contraseña" asp-for="Password" />
-            <span class="text-danger" asp-validation-for="Password"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="PersistentCookies">
-                <input asp-for="PersistentCookies" />
-                @Html.DisplayNameFor(x => x.PersistentCookies)
-            </label>
-        </div>
+<div class="row justify-content-center mt-2">
+    <div class="col-4">
+        <form method="post">
+            <h2 class="font-italic mt-3">Local</h2>
+            <hr />
+            <div class="form-group">
+                <label class="font-weight-bold" asp-for="UserOrEmail"></label>
+                <input class="form-control" placeholder="Usuario o Email" asp-for="UserOrEmail" />
+                <span class="text-danger" asp-validation-for="UserOrEmail"></span>
+            </div>
+            <div class="form-group">
+                <label class="font-weight-bold" asp-for="Password"></label>
+                <input class="form-control" placeholder="Contraseña" asp-for="Password" />
+                <span class="text-danger" asp-validation-for="Password"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PersistentCookies">
+                    <input asp-for="PersistentCookies" />
+                    @Html.DisplayNameFor(x => x.PersistentCookies)
+                </label>
+            </div>
 
-        <div class="text-danger" asp-validation-summary="All"></div>
+            <div class="text-danger" asp-validation-summary="All"></div>
 
-        <button class="btn btn-primary mt-2" type="submit" style="width: auto;">Iniciar Sesión</button>
-    </form>
+            <button class="btn btn-primary mt-2" type="submit" style="width: auto;">Iniciar Sesión</button>
+        </form>
+
+        <hr />
+    </div>
+    <div class="col-12 text-center mt-2">
+        <div>
+            @{
+                if (Model.ExternalLogins.Count() == 0)
+                {
+                    <h3>No existen metodos externos para iniciar sesión</h3>
+                }
+                else
+                {
+                    <form method="post" asp-action="ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl">
+                        <h4>Tambien puedes:</h4>
+                        <div>
+                            @foreach (var provider in Model.ExternalLogins)
+                            {
+                                <button type="submit" class="btn btn-primary border-info" name="provider" value="@provider.Name"
+                                        title="Inicio de sesión usando su cuenta @provider.DisplayName" style="width:auto;">
+                                    Iniciar sesión con <b>@provider.DisplayName</b>
+                                    @switch (provider.Name.ToUpper())
+                                    {
+                                        case "GOOGLE":
+                                            <img class="ml-1" src="~/images/google.png" width="50" height="50" />
+                                            break;
+                                        default:
+                                            break;
+                                    }
+                                </button>
+                            }
+                        </div>
+                    </form>
+                }
+            }
+        </div>
+    </div>
 </div>
