@@ -33,7 +33,10 @@ namespace HomeAssets
             {
                 options.Password.RequiredLength = 6;
                 options.Password.RequireNonAlphanumeric = true;
-            }).AddEntityFrameworkStores<AppDbContext>();
+
+                options.SignIn.RequireConfirmedEmail = true;
+            }).AddEntityFrameworkStores<AppDbContext>()
+              .AddDefaultTokenProviders();
 
             services.AddMvc(options =>
             {

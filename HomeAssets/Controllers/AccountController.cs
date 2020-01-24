@@ -3,6 +3,7 @@ using HomeAssets.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -15,12 +16,14 @@ namespace HomeAssets.Controllers
     {
         private readonly UserManager<App_IdentityUser> userManager;
         private readonly SignInManager<App_IdentityUser> signInManager;
+        private readonly ILogger<AccountController> logger;
 
         public AccountController(UserManager<App_IdentityUser> userManager,
-            SignInManager<App_IdentityUser> signInManager)
+            SignInManager<App_IdentityUser> signInManager, ILogger<AccountController> logger)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
+            this.logger = logger;
         }
 
         [HttpGet, AllowAnonymous]
@@ -45,13 +48,24 @@ namespace HomeAssets.Controllers
 
                 if (result.Succeeded)
                 {
+                    var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
+                    var confirmationLink = Url.Action("ConfirmEmail", "Account",
+                                                      new { userId = user.Id, token }, Request.Scheme);
+
+                    logger.Log(LogLevel.Warning, $">>>EMAIL VALIDATOR>>>\n{confirmationLink}\n-------------------------");
+
                     if (signInManager.IsSignedIn(User))
                     {
                         return RedirectToAction("ListUsers", "Administration");
                     }
 
                     await signInManager.SignInAsync(user, isPersistent: false);
-                    return RedirectToAction("Index", "Home");
+
+                    if ((await userManager.GetClaimsAsync(user)).Count() > 0)
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+                    return RedirectToAction("WithoutClaims", new { emailConfirmed = user.EmailConfirmed });
                 }
 
                 foreach (var error in result.Errors)
@@ -117,6 +131,8 @@ namespace HomeAssets.Controllers
         [HttpPost, AllowAnonymous]
         public async Task<IActionResult> Login(SignIn_vmodel model, string returnUrl)
         {
+            model.ExternalLogins = (await signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+
             if (ModelState.IsValid)
             {
                 App_IdentityUser user;
@@ -130,8 +146,13 @@ namespace HomeAssets.Controllers
                     user = await userManager.FindByNameAsync(model.UserOrEmail);
                 }
 
-                if (user != null)
+                if (user != null && (await userManager.CheckPasswordAsync(user, model.Password)))
                 {
+                    if (!user.EmailConfirmed)
+                    {
+                        ModelState.AddModelError(string.Empty, "Email no confirmado aún");
+                        return View(model);
+                    }
                     var result = await signInManager.PasswordSignInAsync(user, model.Password,
                                                                          model.PersistentCookies, false);
                     if (result.Succeeded && (await userManager.GetClaimsAsync(user)).Count != 0)
@@ -145,7 +166,7 @@ namespace HomeAssets.Controllers
                     }
                     else if (result.Succeeded)
                     {
-                        return RedirectToAction("WithoutClaims", "Home");
+                        return RedirectToAction("WithoutClaims", new { emailConfirmed = user.EmailConfirmed });
                     }
                 }
                 ModelState.AddModelError(string.Empty, " Intento invalido de inicio de sesión");
@@ -171,7 +192,7 @@ namespace HomeAssets.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> ExternalLoginCallback(string returnUrl = null, string remoteError = null)
         {
-            returnUrl = returnUrl ?? Url.Content("~/");
+            returnUrl ??= Url.Content("~/");
 
             SignIn_vmodel model = new SignIn_vmodel()
             {
@@ -193,22 +214,33 @@ namespace HomeAssets.Controllers
                 return View("Login", model);
             }
 
+            var email = info.Principal.FindFirstValue(ClaimTypes.Email);
+            App_IdentityUser user;
+
+            if (email != null)
+            {
+                user = await userManager.FindByEmailAsync(email);
+                if (user != null && !user.EmailConfirmed)
+                {
+                    ModelState.AddModelError(string.Empty, "Email no confirmado aún");
+                    return View("Login", model);
+                }
+            }
+
             var signInResult = await signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey,
                                                                             isPersistent: false, bypassTwoFactor: true);
             if (signInResult.Succeeded)
             {
-                var user = await userManager.FindByEmailAsync(info.Principal.FindFirstValue(ClaimTypes.Email));
+                user = await userManager.FindByEmailAsync(info.Principal.FindFirstValue(ClaimTypes.Email));
                 if ((await userManager.GetClaimsAsync(user)).Count() > 0)
                 {
                     return LocalRedirect(returnUrl);
                 }
-                return RedirectToAction("WithoutClaims", "Home");
+                return RedirectToAction("WithoutClaims", new { emailConfirmed = user.EmailConfirmed });
             }
             else
             {
-                var email = info.Principal.FindFirstValue(ClaimTypes.Email);
-
-                var user = await userManager.FindByEmailAsync(email);
+                user = await userManager.FindByEmailAsync(email);
 
                 if (user == null)
                 {
@@ -237,6 +269,12 @@ namespace HomeAssets.Controllers
                         }
                         return View("Login", model);
                     }
+
+                    var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
+                    var confirmationLink = Url.Action("ConfirmEmail", "Account",
+                                                      new { userId = user.Id, token }, Request.Scheme);
+
+                    logger.Log(LogLevel.Warning, $">>>EMAIL VALIDATOR>>>\n{confirmationLink}\n-------------------------"); 
                 }
 
                 await userManager.AddLoginAsync(user, info);
@@ -246,8 +284,34 @@ namespace HomeAssets.Controllers
                 {
                     return LocalRedirect(returnUrl);
                 }
-                return RedirectToAction("WithoutClaims", "Home");
+                return RedirectToAction("WithoutClaims", new { emailConfirmed = user.EmailConfirmed });
             }
+        }
+
+        [HttpGet]
+        public ViewResult WithoutClaims(bool emailConfirmed)
+        {
+            return View(emailConfirmed);
+        }
+
+        [HttpGet, AllowAnonymous]
+        public async Task<IActionResult> ConfirmEmail(string userId, string token)
+        {
+            if (userId == null || token == null)
+            {
+                return View("Error");
+            }
+
+            var user = await userManager.FindByIdAsync(userId);
+
+            if (user == null)
+            {
+                return View("NotFound", $"El id de usuario es invalido");
+            }
+
+            var result = await userManager.ConfirmEmailAsync(user, token);
+
+            return View(result.Succeeded);
         }
     }
 }

@@ -20,12 +20,6 @@ namespace HomeAssets.Controllers
             return View();
         }
 
-        [AllowAnonymous]
-        public ViewResult WithoutClaims()
-        {
-            return View();
-        }
-
         public ViewResult DetailsByServiceType(string type)
         {
             var model = homeServiceRepository.GetByServiceType(type);
