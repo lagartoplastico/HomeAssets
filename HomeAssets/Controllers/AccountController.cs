@@ -322,5 +322,72 @@ namespace HomeAssets.Controllers
 
             return View(result.Succeeded);
         }
+
+        [HttpGet, AllowAnonymous]
+        public ViewResult ForgotPassword()
+        {
+            return View();
+        }
+
+        [HttpPost, AllowAnonymous]
+        public async Task<IActionResult> ForgotPassword(ForgotPassword_vmodel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await userManager.FindByEmailAsync(model.Email);
+
+                if (user != null && await userManager.IsEmailConfirmedAsync(user))
+                {
+                    var token = await userManager.GeneratePasswordResetTokenAsync(user);
+                    var passwordResetLink = Url.Action("ResetPassword", "Account", new { email = model.Email, token }, Request.Scheme);
+
+                    string message = $"Para restablecer su contraseña haga click en el siguiente enlace:" +
+                                     $"\n{passwordResetLink}";
+
+                    await mailService.SendEmail(model.Email, "Restablecer su contraseña", message);
+                    logger.Log(LogLevel.Information, $"Se envio el token de restablecimiento de contraseña para el usuario {user.UserName}");
+
+                    return View("ForgotPasswordConfirmation");
+                }
+                return View("ForgotPasswordConfirmation");
+            }
+            return View(model);
+        }
+
+        [HttpGet, AllowAnonymous]
+        public IActionResult ResetPassword(string email, string token)
+        {
+            if (email == null || token == null)
+            {
+                return View("NotFound", "formato invalido");
+            }
+            return View();
+        }
+
+        [HttpPost, AllowAnonymous]
+        public async Task<IActionResult> ResetPassword(ResetPassword_vmodel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await userManager.FindByEmailAsync(model.Email);
+                if (user != null)
+                {
+                    var result = await userManager.ResetPasswordAsync(user, model.Token, model.NewPassword);
+
+                    if (result.Succeeded)
+                    {
+                        return View("ResetPasswordConfirmation");
+                    }
+                    foreach (var error in result.Errors)
+                    {
+                        logger.LogWarning($"reset password for user {user.Email}::: {error.Description}");
+                    }
+                    ModelState.AddModelError(string.Empty, "error al restablecer la contraseña");
+                    return View(model);
+                }
+                return View("ResetPasswordConfirmation");
+            }
+            return View(model);
+        }
     }
 }
