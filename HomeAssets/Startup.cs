@@ -1,6 +1,7 @@
 using HomeAssets.Models;
 using HomeAssets.Models.DataBaseContext;
 using HomeAssets.Models.ExtendedIdentity;
+using HomeAssets.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -24,6 +25,8 @@ namespace HomeAssets
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<SmtpSettings>(config.GetSection("SmtpSettings"));
+
             services.AddDbContextPool<AppDbContext>(options =>
             {
                 options.UseNpgsql(config.GetConnectionString("HomeServiceDB"));
@@ -73,6 +76,7 @@ namespace HomeAssets
 
             //services.AddSingleton<IHomeServiceRepo, MockHomeServiceRepo>();
             services.AddScoped<IHomeServiceRepo, NpgsqlHomeServiceRepo>();
+            services.AddTransient<IMailService, EmailService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

@@ -1,4 +1,5 @@
 ﻿using HomeAssets.Models.ExtendedIdentity;
+using HomeAssets.Services;
 using HomeAssets.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -17,13 +18,15 @@ namespace HomeAssets.Controllers
         private readonly UserManager<App_IdentityUser> userManager;
         private readonly SignInManager<App_IdentityUser> signInManager;
         private readonly ILogger<AccountController> logger;
+        private readonly IMailService mailService;
 
         public AccountController(UserManager<App_IdentityUser> userManager,
-            SignInManager<App_IdentityUser> signInManager, ILogger<AccountController> logger)
+            SignInManager<App_IdentityUser> signInManager, ILogger<AccountController> logger, IMailService mailService)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.logger = logger;
+            this.mailService = mailService;
         }
 
         [HttpGet, AllowAnonymous]
@@ -51,8 +54,10 @@ namespace HomeAssets.Controllers
                     var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
                     var confirmationLink = Url.Action("ConfirmEmail", "Account",
                                                       new { userId = user.Id, token }, Request.Scheme);
+                    string message = $"Haga click en el siguiente enlace para confirmar su correo electrónico:\n\n {confirmationLink}";
 
-                    logger.Log(LogLevel.Warning, $">>>EMAIL VALIDATOR>>>\n{confirmationLink}\n-------------------------");
+                    await mailService.SendEmail(user.Email, "Confirmación de correo electrónico", message);
+                    logger.Log(LogLevel.Information, $"Se envio el token de confirmacion de email para el usuario {user.UserName}");
 
                     if (signInManager.IsSignedIn(User))
                     {
@@ -274,7 +279,11 @@ namespace HomeAssets.Controllers
                     var confirmationLink = Url.Action("ConfirmEmail", "Account",
                                                       new { userId = user.Id, token }, Request.Scheme);
 
-                    logger.Log(LogLevel.Warning, $">>>EMAIL VALIDATOR>>>\n{confirmationLink}\n-------------------------"); 
+                    string message = $"Haga click en el siguiente enlace para confirmar su correo electrónico:" +
+                                     $"\n{confirmationLink}";
+
+                    await mailService.SendEmail(user.Email, "Confirmación de correo electrónico", message);
+                    logger.Log(LogLevel.Information, $"Se envio el token de confirmacion de email para el usuario {user.UserName}");
                 }
 
                 await userManager.AddLoginAsync(user, info);
