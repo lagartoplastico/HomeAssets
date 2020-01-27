@@ -1,6 +1,7 @@
 using HomeAssets.Models;
 using HomeAssets.Models.DataBaseContext;
 using HomeAssets.Models.ExtendedIdentity;
+using HomeAssets.Security;
 using HomeAssets.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -11,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
 
 namespace HomeAssets
 {
@@ -26,6 +28,14 @@ namespace HomeAssets
         public void ConfigureServices(IServiceCollection services)
         {
             services.Configure<SmtpSettings>(config.GetSection("SmtpSettings"));
+            services.Configure<DataProtectionTokenProviderOptions>(options =>
+            {
+                options.TokenLifespan = TimeSpan.FromMinutes(15);
+            });
+            services.Configure<CustomEmailConfirmationTokenProviderOptions>(options =>
+            {
+                options.TokenLifespan = TimeSpan.FromDays(2);
+            });
 
             services.AddDbContextPool<AppDbContext>(options =>
             {
@@ -38,8 +48,11 @@ namespace HomeAssets
                 options.Password.RequireNonAlphanumeric = true;
 
                 options.SignIn.RequireConfirmedEmail = true;
+
+                options.Tokens.EmailConfirmationTokenProvider = "CustomEmailConfirmationTokenProvider";
             }).AddEntityFrameworkStores<AppDbContext>()
-              .AddDefaultTokenProviders();
+              .AddDefaultTokenProviders()
+              .AddTokenProvider<CustomEmailConfirmationTokenProvider<App_IdentityUser>>("CustomEmailConfirmationTokenProvider");
 
             services.AddMvc(options =>
             {
@@ -58,14 +71,14 @@ namespace HomeAssets
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("AccountManagers", 
+                options.AddPolicy("AccountManagers",
                     policy => policy.RequireClaim("Role", new string[] { "Administrador CON permisos de modificación" }));
-                options.AddPolicy("AccountViewers", 
+                options.AddPolicy("AccountViewers",
                     policy => policy.RequireClaim("Role", new string[] { "Administrador SIN permisos de modificación",
                                                                          "Administrador CON permisos de modificación"}));
-                options.AddPolicy("ServiceManagers", 
+                options.AddPolicy("ServiceManagers",
                     policy => policy.RequireClaim("Role", new string[] { "Usuario CON permisos de modificación",
-                                                                         "Administrador SIN permisos de modificación", 
+                                                                         "Administrador SIN permisos de modificación",
                                                                          "Administrador CON permisos de modificación"}));
                 options.AddPolicy("ServiceViewers",
                     policy => policy.RequireClaim("Role", new string[] { "Usuario SIN permisos de modificación",
