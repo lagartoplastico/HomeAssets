@@ -1,0 +1,16 @@
+﻿@{
+    ViewBag.Title = "Cuenta Bloqueada";
+}
+
+<div class="alert alert-danger m-3">
+    <h1 class="h4 mb-3">
+        Tu cuenta ha sido bloqueada por seguridad.
+        <img src="~/images/locked.png" width="100" height="100" />
+    </h1>
+    <hr />
+    <p class="text-info m-1">
+        Se realizaron varios intentos inválidos de inicio de sesión.<br />
+        Intente nuevamente despues de un tiempo o puedes restablecer tu contraseña con el botón de abajo.
+    </p>
+</div>
+<a class="btn btn-outline-info ml-3" asp-action="ForgotPassword" style="width: auto;">¿Olvidaste tu contraseña?</a>

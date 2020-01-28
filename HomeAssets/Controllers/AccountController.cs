@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -151,15 +152,16 @@ namespace HomeAssets.Controllers
                     user = await userManager.FindByNameAsync(model.UserOrEmail);
                 }
 
-                if (user != null && (await userManager.CheckPasswordAsync(user, model.Password)))
+                if (user != null)
                 {
-                    if (!user.EmailConfirmed)
+                    if ((await userManager.CheckPasswordAsync(user, model.Password)) && !user.EmailConfirmed)
                     {
                         ModelState.AddModelError(string.Empty, "Email no confirmado aún");
                         return View(model);
                     }
+
                     var result = await signInManager.PasswordSignInAsync(user, model.Password,
-                                                                         model.PersistentCookies, false);
+                                                                         model.PersistentCookies, true);
                     if (result.Succeeded && (await userManager.GetClaimsAsync(user)).Count != 0)
                     {
                         if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
@@ -172,6 +174,10 @@ namespace HomeAssets.Controllers
                     else if (result.Succeeded)
                     {
                         return RedirectToAction("WithoutClaims", new { emailConfirmed = user.EmailConfirmed });
+                    }
+                    else if (result.IsLockedOut)
+                    {
+                        return View("AccountLocked");
                     }
                 }
                 ModelState.AddModelError(string.Empty, " Intento invalido de inicio de sesión");
@@ -376,6 +382,10 @@ namespace HomeAssets.Controllers
 
                     if (result.Succeeded)
                     {
+                        if (await userManager.IsLockedOutAsync(user))
+                        {
+                            await userManager.SetLockoutEndDateAsync(user, DateTimeOffset.UtcNow);
+                        }
                         return View("ResetPasswordConfirmation");
                     }
                     foreach (var error in result.Errors)

@@ -50,6 +50,9 @@ namespace HomeAssets
                 options.SignIn.RequireConfirmedEmail = true;
 
                 options.Tokens.EmailConfirmationTokenProvider = "CustomEmailConfirmationTokenProvider";
+
+                options.Lockout.MaxFailedAccessAttempts = 5;
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(10);
             }).AddEntityFrameworkStores<AppDbContext>()
               .AddDefaultTokenProviders()
               .AddTokenProvider<CustomEmailConfirmationTokenProvider<App_IdentityUser>>("CustomEmailConfirmationTokenProvider");
