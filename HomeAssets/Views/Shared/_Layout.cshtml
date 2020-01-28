@@ -70,12 +70,22 @@
                     <li class="dropdown-divider"></li>
                     @if (signInManager.IsSignedIn(User))
                     {
-                        @if ((await authorizationService.AuthorizeAsync(User, "AccountViewers")).Succeeded)
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link" asp-controller="administration" asp-action="ListUsers">Administración</a>
-                            </li>
-                        }
+                        <li class="nav-item dropdown mr-1">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownLink"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Administración
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownLink">
+
+                                @if ((await authorizationService.AuthorizeAsync(User, "AccountViewers")).Succeeded)
+                                {
+                                    <a class="dropdown-item" asp-action="ListUsers" asp-controller="Administration">Usuarios</a>
+                                }
+
+                                <a class="dropdown-item" asp-action="ChangePassword" asp-controller="Account">Cambiar contraseña</a>
+                            </div>
+                        </li>
+
                         <li class="nav-item">
                             <form class="m-0" asp-controller="Account" asp-action="Logout" method="post">
                                 <button class="nav-link btn btn-link border-0" type="submit" style="width:auto">
