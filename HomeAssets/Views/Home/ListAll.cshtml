@@ -12,7 +12,7 @@
         @foreach (var homeService in Model)
         {
             <a class="text-decoration-none" style="color:black;" asp-controller="Home"
-               asp-action="ServiceDetail" asp-route-id="@homeService.Id">
+               asp-action="ServiceDetail" asp-route-id="@homeService.EncryptedId">
                 <div class="card m-2" style="min-width:15rem; max-width:15rem;">
                     <div class="card-header text-center">
                         @switch (homeService.ServiceType.ToString())

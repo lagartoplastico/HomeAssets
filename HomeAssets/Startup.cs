@@ -90,6 +90,7 @@ namespace HomeAssets
             //services.AddSingleton<IHomeServiceRepo, MockHomeServiceRepo>();
             services.AddScoped<IHomeServiceRepo, NpgsqlHomeServiceRepo>();
             services.AddTransient<IMailService, EmailService>();
+            services.AddSingleton<DataProtectionPurposeStrings>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

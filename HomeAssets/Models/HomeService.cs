@@ -1,10 +1,14 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HomeAssets.Models
 {
     public class HomeService
     {
         public int Id { get; set; }
+
+        [NotMapped]
+        public string EncryptedId { get; set; }
 
         [Required]
         public Locations Location { get; set; }
