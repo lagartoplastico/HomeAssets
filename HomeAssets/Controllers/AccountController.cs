@@ -391,8 +391,14 @@ namespace HomeAssets.Controllers
         }
 
         [HttpGet]
-        public IActionResult ChangePassword()
+        public async Task<IActionResult> ChangePassword()
         {
+            var user = await userManager.GetUserAsync(User);
+            bool userHasPassword = await userManager.HasPasswordAsync(user);
+            if (!userHasPassword)
+            {
+                return RedirectToAction("AddLocalPassword");
+            }
             return View();
         }
 
@@ -422,6 +428,42 @@ namespace HomeAssets.Controllers
 
                 await signInManager.RefreshSignInAsync(user);
                 return View("ChangePasswordConfirmation");
+            }
+            return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> AddLocalPassword()
+        {
+            var user = await userManager.GetUserAsync(User);
+            bool userHasPassword = await userManager.HasPasswordAsync(user);
+            if (userHasPassword)
+            {
+                return RedirectToAction("ChangePassword");
+            }
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddLocalPassword(AddLocalPassword_vmodel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await userManager.GetUserAsync(User);
+                if (user == null)
+                {
+                    return RedirectToAction("Login");
+                }
+                var result = await userManager.AddPasswordAsync(user, model.LocalPassword);
+                if (!result.Succeeded)
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
+                    return View(model);
+                }
+                return View("AddLocalPasswordConfirmation");
             }
             return View(model);
         }
