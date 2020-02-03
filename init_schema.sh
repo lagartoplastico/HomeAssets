@@ -244,7 +244,7 @@ COPY public."AspNetRoles" ("Id", "Name", "NormalizedName", "ConcurrencyStamp") F
 --
 
 COPY public."AspNetUserClaims" ("Id", "UserId", "ClaimType", "ClaimValue") FROM stdin;
-999999999	suseradm-su01-9283-7465-k01postgres07	Role	admin1
+999999999	suseradm-su01-9283-7465-k01joannes07	Role	admin1
 \.
 
 
@@ -285,7 +285,7 @@ COPY public."AspNetUserTokens" ("UserId", "LoginProvider", "Name", "Value") FROM
 --
 
 COPY public."AspNetUsers" ("Id", "UserName", "NormalizedUserName", "Email", "NormalizedEmail", "EmailConfirmed", "PasswordHash", "SecurityStamp", "ConcurrencyStamp", "PhoneNumber", "PhoneNumberConfirmed", "TwoFactorEnabled", "LockoutEnd", "LockoutEnabled", "AccessFailedCount", "Gender") FROM stdin;
-suseradm-su01-9283-7465-k01postgres07	superuser	SUPERUSER	su@jdevops.xyz	SU@jdevops.xyz	t	AQAAAAEAACcQAAAAECSsynTcC+BpL/kCTy6r/9ncFzlORXGPO9RxAhNGIqdkibRzH7lpTzQ17Ii6KtmxGA==	7d134ae2-c95c-4c72-a9d8-120db6b2c868	b682f5e6-e5d9-4ce9-986e-ce59fb6b9db9	\N	f	f	\N	t	0	0
+suseradm-su01-9283-7465-k01joannes07	superuser	SUPERUSER	su@jdevops.xyz	SU@jdevops.xyz	t	AQAAAAEAACcQAAAAECSsynTcC+BpL/kCTy6r/9ncFzlORXGPO9RxAhNGIqdkibRzH7lpTzQ17Ii6KtmxGA==	7d134ae2-c95c-4c72-a9d8-120db6b2c868	b682f5e6-e5d9-4ce9-986e-ce59fb6b9db9	\N	f	f	\N	t	0	0
 \.
 
 
