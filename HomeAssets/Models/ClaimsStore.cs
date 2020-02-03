@@ -8,10 +8,10 @@ namespace HomeAssets.Models
         public static List<Claim> AllClaims = new List<Claim>()
         {
             // Roles
-            new Claim("Role","Administrador CON permisos de modificación"),
-            new Claim("Role","Administrador SIN permisos de modificación"),
-            new Claim("Role","Usuario CON permisos de modificación"),
-            new Claim("Role","Usuario SIN permisos de modificación")
+            new Claim("Role","admin1"),
+            new Claim("Role","admin2"),
+            new Claim("Role","user1"),
+            new Claim("Role","user2")
         };
     }
 }

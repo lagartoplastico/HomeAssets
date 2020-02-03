@@ -4,3 +4,8 @@ HomeAssets/obj/
 HomeAssets/Properties/
 HomeAssets/appsettings.development.json
 HomeAssets/wwwroot/lib/
+HomeAssets/HomeAssets.csproj.user
+webapp.env
+db.env
+mail.env
+

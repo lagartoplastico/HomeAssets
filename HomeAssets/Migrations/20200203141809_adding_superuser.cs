@@ -2,19 +2,19 @@
 
 namespace HomeAssets.Migrations
 {
-    public partial class superuser : Migration
+    public partial class adding_superuser : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "Gender", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "susususu-su01-9283-7465-001abcdetrn5", 0, "c1f68159-5450-4b76-9057-7e2d0cf6c822", "superuser@superuser.local", true, 0, false, null, "SUPERUSER@SUPERUSER.LOCAL", "SUPERUSER", "AQAAAAEAACcQAAAAEP9XRASyYOoHrTjAl8zLJfHJ9TOxenzsBEaDkCT6IPCi5d2qJvrGJyKDdwt43LxKZg==", null, false, "349fc654-5fcd-49f2-b62a-51d392a18e20", false, "superuser" });
+                values: new object[] { "suseradm-su01-9283-7465-k01joannes07", 0, "b682f5e6-e5d9-4ce9-986e-ce59fb6b9db9", "su@jdevops.xyz", true, 0, true, null, "SU@jdevops.xyz", "SUPERUSER", "AQAAAAEAACcQAAAAECSsynTcC+BpL/kCTy6r/9ncFzlORXGPO9RxAhNGIqdkibRzH7lpTzQ17Ii6KtmxGA==", null, false, "7d134ae2-c95c-4c72-a9d8-120db6b2c868", false, "superuser" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserClaims",
                 columns: new[] { "Id", "ClaimType", "ClaimValue", "UserId" },
-                values: new object[] { 999999999, "Role", "Administrador CON permisos de modificación", "susususu-su01-9283-7465-001abcdetrn5" });
+                values: new object[] { 999999999, "Role", "admin1", "suseradm-su01-9283-7465-k01joannes07" });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -27,7 +27,7 @@ namespace HomeAssets.Migrations
             migrationBuilder.DeleteData(
                 table: "AspNetUsers",
                 keyColumn: "Id",
-                keyValue: "susususu-su01-9283-7465-001abcdetrn5");
+                keyValue: "suseradm-su01-9283-7465-k01joannes07");
         }
     }
 }

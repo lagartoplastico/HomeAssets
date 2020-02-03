@@ -12,15 +12,16 @@ namespace HomeAssets.Models.DataBaseContext
 
             var user = new App_IdentityUser()
             {
-                Id = "susususu-su01-9283-7465-001abcdetrn5",
+                Id = "suseradm-su01-9283-7465-k01joannes07",
                 UserName = "superuser",
                 NormalizedUserName = "SUPERUSER",
-                Email = "superuser@superuser.local",
-                NormalizedEmail = "SUPERUSER@SUPERUSER.LOCAL",
-                EmailConfirmed = true
+                Email = "su@jdevops.xyz",
+                NormalizedEmail = "SU@jdevops.xyz",
+                EmailConfirmed = true,
+                LockoutEnabled = true
             };
 
-            user.PasswordHash = passHash.HashPassword(user, "$$$uperuser");
+            user.PasswordHash = passHash.HashPassword(user, "$$$uperuser2020");
 
             builder.Entity<App_IdentityUser>().HasData(user);
 
@@ -28,9 +29,9 @@ namespace HomeAssets.Models.DataBaseContext
                 new IdentityUserClaim<string>()
                 {
                     Id = 999999999,
-                    UserId = "susususu-su01-9283-7465-001abcdetrn5",
+                    UserId = "suseradm-su01-9283-7465-k01joannes07",
                     ClaimType = "Role",
-                    ClaimValue = "Administrador CON permisos de modificación"
+                    ClaimValue = "admin1"
                 });
         }
     }

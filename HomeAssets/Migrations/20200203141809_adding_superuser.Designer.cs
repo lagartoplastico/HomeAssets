@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace HomeAssets.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20200122143223_superuser")]
-    partial class superuser
+    [Migration("20200203141809_adding_superuser")]
+    partial class adding_superuser
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -90,18 +90,18 @@ namespace HomeAssets.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "susususu-su01-9283-7465-001abcdetrn5",
+                            Id = "suseradm-su01-9283-7465-k01joannes07",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "c1f68159-5450-4b76-9057-7e2d0cf6c822",
-                            Email = "superuser@superuser.local",
+                            ConcurrencyStamp = "b682f5e6-e5d9-4ce9-986e-ce59fb6b9db9",
+                            Email = "su@jdevops.xyz",
                             EmailConfirmed = true,
                             Gender = 0,
-                            LockoutEnabled = false,
-                            NormalizedEmail = "SUPERUSER@SUPERUSER.LOCAL",
+                            LockoutEnabled = true,
+                            NormalizedEmail = "SU@jdevops.xyz",
                             NormalizedUserName = "SUPERUSER",
-                            PasswordHash = "AQAAAAEAACcQAAAAEP9XRASyYOoHrTjAl8zLJfHJ9TOxenzsBEaDkCT6IPCi5d2qJvrGJyKDdwt43LxKZg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAECSsynTcC+BpL/kCTy6r/9ncFzlORXGPO9RxAhNGIqdkibRzH7lpTzQ17Ii6KtmxGA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "349fc654-5fcd-49f2-b62a-51d392a18e20",
+                            SecurityStamp = "7d134ae2-c95c-4c72-a9d8-120db6b2c868",
                             TwoFactorEnabled = false,
                             UserName = "superuser"
                         });
@@ -216,8 +216,8 @@ namespace HomeAssets.Migrations
                         {
                             Id = 999999999,
                             ClaimType = "Role",
-                            ClaimValue = "Administrador CON permisos de modificación",
-                            UserId = "susususu-su01-9283-7465-001abcdetrn5"
+                            ClaimValue = "admin1",
+                            UserId = "suseradm-su01-9283-7465-k01joannes07"
                         });
                 });
 

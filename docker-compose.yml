@@ -1,0 +1,49 @@
+version: '3.7'
+
+services:
+    db:
+        image: postgres:12.1
+        env_file: db.env 
+        ports:
+            - "55342:5432"
+        volumes: 
+            - ./init_schema.sh:/docker-entrypoint-initdb.d/1-init_schema.sh
+            - dbpostgres:/var/lib/postgresql/data
+        networks:
+            - net1
+
+    mail:
+        build: 
+            context: ./MailServer
+            dockerfile: ./Dockerfile
+        env_file: mail.env
+        ports: 
+            - "25:25"
+        volumes:
+            - spool:/var/spool/postfix
+        networks:
+            - net1
+        depends_on: 
+            - db
+
+    webapp:
+        build:
+            context: .
+            dockerfile: ./Dockerfile
+        ports: 
+            - "80:80"
+        env_file: webapp.env
+        volumes:
+            - DPkeys:/root/.aspnet/DataProtection-Keys
+        networks:
+            - net1
+        depends_on: 
+            - mail
+            - db
+
+volumes: 
+    spool:
+    dbpostgres:
+    DPkeys:
+networks:
+    net1:

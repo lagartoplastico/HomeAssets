@@ -39,7 +39,7 @@ namespace HomeAssets
 
             services.AddDbContextPool<AppDbContext>(options =>
             {
-                options.UseNpgsql(config.GetConnectionString("HomeServiceDB"));
+                options.UseNpgsql(config.GetConnectionString("HomeAssetsDB"));
             });
 
             services.AddIdentity<App_IdentityUser, IdentityRole>(options =>
@@ -63,7 +63,7 @@ namespace HomeAssets
 
                 var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
                 options.Filters.Add(new AuthorizeFilter(policy));
-            });
+            }).AddXmlSerializerFormatters();
 
             services.AddAuthentication()
                 .AddGoogle(options =>
@@ -75,19 +75,19 @@ namespace HomeAssets
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("AccountManagers",
-                    policy => policy.RequireClaim("Role", new string[] { "Administrador CON permisos de modificación" }));
+                    policy => policy.RequireClaim("Role", new string[] { "admin1" }));
                 options.AddPolicy("AccountViewers",
-                    policy => policy.RequireClaim("Role", new string[] { "Administrador SIN permisos de modificación",
-                                                                         "Administrador CON permisos de modificación"}));
+                    policy => policy.RequireClaim("Role", new string[] { "admin2",
+                                                                         "admin1"}));
                 options.AddPolicy("ServiceManagers",
-                    policy => policy.RequireClaim("Role", new string[] { "Usuario CON permisos de modificación",
-                                                                         "Administrador SIN permisos de modificación",
-                                                                         "Administrador CON permisos de modificación"}));
+                    policy => policy.RequireClaim("Role", new string[] { "user1",
+                                                                         "admin2",
+                                                                         "admin1"}));
                 options.AddPolicy("ServiceViewers",
-                    policy => policy.RequireClaim("Role", new string[] { "Usuario SIN permisos de modificación",
-                                                                         "Usuario CON permisos de modificación",
-                                                                         "Administrador SIN permisos de modificación",
-                                                                         "Administrador CON permisos de modificación"}));
+                    policy => policy.RequireClaim("Role", new string[] { "user2",
+                                                                         "user1",
+                                                                         "admin2",
+                                                                         "admin1"}));
             });
 
             //services.AddSingleton<IHomeServiceRepo, MockHomeServiceRepo>();
