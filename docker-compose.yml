@@ -3,7 +3,10 @@ version: '3.7'
 services:
     db:
         image: postgres:12.1
-        env_file: db.env 
+        environment: 
+            - POSTGRES_USER=${POSTGRES_USER}
+            - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+            - POSTGRES_DB=${POSTGRES_DB}
         ports:
             - "55342:5432"
         volumes: 
@@ -12,38 +15,31 @@ services:
         networks:
             - net1
 
-    mail:
-        build: 
-            context: ./MailServer
-            dockerfile: ./Dockerfile
-        env_file: mail.env
-        ports: 
-            - "25:25"
-        volumes:
-            - spool:/var/spool/postfix
-        networks:
-            - net1
-        depends_on: 
-            - db
-
     webapp:
         build:
             context: .
-            dockerfile: ./Dockerfile
+            dockerfile: ./HomeAssets/Dockerfile
         ports: 
             - "80:80"
-        env_file: webapp.env
+            - "443:443"
+        environment: 
+            - ConnectionStrings:HomeAssetsDB=${CS}
+            - SmtpSettings:From=${From}
+            - SmtpSettings:Server=${MailServer}
+            - SmtpSettings:Username=${MailUsername}
+            - SmtpSettings:Password=${MailPassword}
+            - ASPNETCORE_ENVIRONMENT=Development
+            - DOTNET_RUNNING_IN_CONTAINER=true
+            - DOTNET_USE_POLLING_FILE_WATCHER=1
+
         volumes:
-            - DPkeys:/root/.aspnet/DataProtection-Keys
+            - ./DPkeys:/root/.aspnet/DataProtection-Keys
         networks:
             - net1
-        depends_on: 
-            - mail
+        depends_on:
             - db
-
 volumes: 
-    spool:
     dbpostgres:
-    DPkeys:
+
 networks:
     net1:

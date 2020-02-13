@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace HomeAssets.Models.Attributes
 {
@@ -11,18 +12,18 @@ namespace HomeAssets.Models.Attributes
         {
             validVendors = new List<string>()
             {
+                "mailinator.com",
+
                 "gmail.com",
                 "outlook.com",
-                "hotmail.com",
-                "mailinator.com",
-                "mail.com"
+                "hotmail.com"
             };
 
             ErrorMessage = "Dominios validos: ";
 
-            foreach (string vendor in validVendors)
+            for (int i = 1; i < validVendors.Count(); i++)
             {
-                ErrorMessage += $"@{vendor} ";
+                ErrorMessage += $"@{validVendors[i]} ";
             }
         }
 
