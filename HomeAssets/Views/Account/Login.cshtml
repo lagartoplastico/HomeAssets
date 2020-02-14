@@ -3,8 +3,10 @@
 @{
     ViewBag.Title = "Inicio de Sesión";
 }
-<h1 class="font-italic mt-3">Inicio de Sesión</h1>
-
+<h1 class="mt-3" style="font-family:Arial">Inicio de Sesión</h1>
+<div class="text-center mt-1">
+    <img src="~/images/ha.png" style=" width:auto; max-width:35%; min-width:300px; height: auto;" />
+</div>
 <div class="row justify-content-center mt-2">
     <div class="col-sm-12 col-md-7 col-lg-5 col-xl-4">
         <form method="post">
@@ -27,7 +29,7 @@
                 </label>
             </div>
 
-            <button class="btn btn-primary my-2" type="submit" style="width: auto;">Iniciar Sesión</button>
+            <button class="btn btn-primary my-1" type="submit" style="width: auto;">Iniciar Sesión</button>
             <div>
                 <a asp-action="ForgotPassword">¿Olvidaste tu contraseña?</a>
             </div>

@@ -6,7 +6,7 @@
 
 @if (Model.Count() > 0)
 {
-    <h1 class="font-italic my-3">Tipo de Servicio: @Model.ElementAt(0).ServiceType</h1>
+    <h1 class="my-3" style="font-family:Arial">Tipo de Servicio: @Model.ElementAt(0).ServiceType</h1>
 
     <div class="card-deck">
         @foreach (var homeService in Model)

@@ -2,7 +2,7 @@
     ViewBag.Title = "Home";
 }
 
-<h1 class="font-italic mt-3">Servicios:</h1>
+<h1 class="mt-3" style="font-family:Arial">Servicios:</h1>
 <div class="row justify-content-center">
     <div class="col-sm-12 card-deck justify-content-center">
         @foreach (string serviceType in Enum.GetNames(typeof(ServiceTypes)))
@@ -44,7 +44,7 @@
 
 <div class="row">
     <div class="col-6">
-        <h1 class="font-italic mt-2">A nombre de:</h1>
+        <h1 class="mt-2" style="font-family:Arial">A nombre de:</h1>
         <div class="list-group">
             @foreach (string member in Enum.GetNames(typeof(Members)))
             {
@@ -57,7 +57,7 @@
     </div>
 
     <div class="col-6">
-        <h1 class="font-italic mt-2">Ubicación:</h1>
+        <h1 class="mt-2" style="font-family:Arial">Ubicación:</h1>
         <div class="list-group">
             @foreach (string location in Enum.GetNames(typeof(Locations)))
             {

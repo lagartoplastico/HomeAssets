@@ -28,7 +28,7 @@ services:
             - SmtpSettings:Server=${MailServer}
             - SmtpSettings:Username=${MailUsername}
             - SmtpSettings:Password=${MailPassword}
-            - ASPNETCORE_ENVIRONMENT=Development
+            - ASPNETCORE_ENVIRONMENT=Production
             - DOTNET_RUNNING_IN_CONTAINER=true
             - DOTNET_USE_POLLING_FILE_WATCHER=1
 
@@ -36,6 +36,7 @@ services:
             - ./DPkeys:/root/.aspnet/DataProtection-Keys
         networks:
             - net1
+            - mailserver_net
         depends_on:
             - db
 volumes: 
@@ -43,3 +44,5 @@ volumes:
 
 networks:
     net1:
+    mailserver_net:
+        external: true
