@@ -4,6 +4,6 @@ namespace HomeAssets.Services
 {
     public interface IMailService
     {
-        Task SendEmail(string toEmail, string subject, string plainTextContent);
+        void SendEmail(string toEmail, string subject, string body);
     }
 }

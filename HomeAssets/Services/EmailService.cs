@@ -1,28 +1,50 @@
 ﻿using HomeAssets.Models;
 using Microsoft.Extensions.Options;
+using System;
 using System.Net;
 using System.Net.Mail;
-using System.Threading.Tasks;
 
 namespace HomeAssets.Services
 {
     public class EmailService : IMailService
     {
+        // (Optional) the name of a configuration set to use for this message.
+        // If you comment out this line, you also need to remove or comment out
+        // the "X-SES-CONFIGURATION-SET" header below.
+        //String CONFIGSET = "ConfigSet";
+
         private readonly SmtpSettings settings;
-        private readonly SmtpClient client;
+
         public EmailService(IOptions<SmtpSettings> options)
         {
             settings = options.Value;
-            client = new SmtpClient(settings.Server)
-            {
-                Credentials = new NetworkCredential(settings.Username, settings.Password)
-            };
         }
 
-        public Task SendEmail(string toEmail, string subject, string plainTextContent)
+        public void SendEmail(string toEmail, string subject, string body)
         {
-            var message = new MailMessage(settings.From, toEmail, subject, plainTextContent);
-            return client.SendMailAsync(message);
+            MailMessage message = new MailMessage();
+            message.IsBodyHtml = false;
+            message.From = new MailAddress(settings.From, settings.Name);
+            message.To.Add(new MailAddress(toEmail));
+            message.Subject = subject;
+            message.Body = body;
+            // Comment or delete the next line if you are not using a configuration set
+            //message.Headers.Add("X-SES-CONFIGURATION-SET", CONFIGSET);
+
+            using SmtpClient client = new SmtpClient(settings.Server, settings.Port);
+            client.Credentials = new NetworkCredential(settings.Username, settings.Password);
+            client.EnableSsl = true;
+            try
+            {
+                Console.WriteLine("Attempting to send email...");
+                client.Send(message);
+                Console.WriteLine("Email sent!");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("The email was not sent.");
+                Console.WriteLine("Error message: " + ex.Message);
+            }
         }
     }
 }

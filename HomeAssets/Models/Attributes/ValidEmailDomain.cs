@@ -13,10 +13,11 @@ namespace HomeAssets.Models.Attributes
             validVendors = new List<string>()
             {
                 "mailinator.com",
-
                 "gmail.com",
                 "outlook.com",
-                "hotmail.com"
+                "hotmail.com",
+                "simulator.amazonses.com",
+                "jdevops.xyz"
             };
 
             ErrorMessage = "Dominios validos: ";

@@ -57,7 +57,7 @@ namespace HomeAssets.Controllers
                                                       new { userId = user.Id, token }, Request.Scheme);
                     string message = $"Haga click en el siguiente enlace para confirmar su correo electrónico:\n\n {confirmationLink}";
 
-                    await mailService.SendEmail(user.Email, "Confirmación de correo electrónico", message);
+                    mailService.SendEmail(user.Email, "Confirmación de correo electrónico", message);
                     logger.Log(LogLevel.Information, $"Se envio el token de confirmacion de email para el usuario {user.UserName}");
 
                     if (signInManager.IsSignedIn(User))
@@ -288,7 +288,7 @@ namespace HomeAssets.Controllers
                     string message = $"Haga click en el siguiente enlace para confirmar su correo electrónico:" +
                                      $"\n{confirmationLink}";
 
-                    await mailService.SendEmail(user.Email, "Confirmación de correo electrónico", message);
+                    mailService.SendEmail(user.Email, "Confirmación de correo electrónico", message);
                     logger.Log(LogLevel.Information, $"Se envio el token de confirmacion de email para el usuario {user.UserName}");
                 }
 
@@ -350,7 +350,7 @@ namespace HomeAssets.Controllers
                     string message = $"Para restablecer su contraseña haga click en el siguiente enlace:" +
                                      $"\n{passwordResetLink}";
 
-                    await mailService.SendEmail(model.Email, "Restablecer su contraseña", message);
+                    mailService.SendEmail(model.Email, "Restablecer su contraseña", message);
                     logger.Log(LogLevel.Information, $"Se envio el token de restablecimiento de contraseña para el usuario {user.UserName}");
 
                     return View("ForgotPasswordConfirmation");

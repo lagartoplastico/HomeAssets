@@ -24,10 +24,12 @@ services:
             - "443:443"
         environment: 
             - ConnectionStrings:HomeAssetsDB=${CS}
-            - SmtpSettings:From=${From}
-            - SmtpSettings:Server=${MailServer}
-            - SmtpSettings:Username=${MailUsername}
-            - SmtpSettings:Password=${MailPassword}
+            - SmtpSettings:From=${SENDER_ADDRESS}
+            - SmtpSettings:Name=${SENDER_NAME}
+            - SmtpSettings:Server=${MAIL_SERVER}
+            - SmtpSettings:Port=${SMTP_PORT}
+            - SmtpSettings:Username=${MAIL_USERNAME}
+            - SmtpSettings:Password=${MAIL_PASSWORD}
             - ASPNETCORE_ENVIRONMENT=Production
             - DOTNET_RUNNING_IN_CONTAINER=true
             - DOTNET_USE_POLLING_FILE_WATCHER=1
@@ -36,7 +38,6 @@ services:
             - ./DPkeys:/root/.aspnet/DataProtection-Keys
         networks:
             - net1
-            - mailserver_net
         depends_on:
             - db
 volumes: 
@@ -44,5 +45,3 @@ volumes:
 
 networks:
     net1:
-    mailserver_net:
-        external: true
