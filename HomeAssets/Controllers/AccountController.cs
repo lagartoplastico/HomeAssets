@@ -1,4 +1,5 @@
-﻿using HomeAssets.Models.ExtendedIdentity;
+﻿using HomeAssets.Models;
+using HomeAssets.Models.ExtendedIdentity;
 using HomeAssets.Services;
 using HomeAssets.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -20,14 +21,16 @@ namespace HomeAssets.Controllers
         private readonly SignInManager<App_IdentityUser> signInManager;
         private readonly ILogger<AccountController> logger;
         private readonly IMailService mailService;
+        private readonly IAuthorizedEmailRepo authorizedEmailRepo;
 
-        public AccountController(UserManager<App_IdentityUser> userManager,
-            SignInManager<App_IdentityUser> signInManager, ILogger<AccountController> logger, IMailService mailService)
+        public AccountController(UserManager<App_IdentityUser> userManager, SignInManager<App_IdentityUser> signInManager,
+                                 ILogger<AccountController> logger, IMailService mailService, IAuthorizedEmailRepo authorizedEmailRepo)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.logger = logger;
             this.mailService = mailService;
+            this.authorizedEmailRepo = authorizedEmailRepo;
         }
 
         [HttpGet, AllowAnonymous]
@@ -41,6 +44,12 @@ namespace HomeAssets.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (authorizedEmailRepo.GetByEmail(model.Email) == null)
+                {
+                    ModelState.AddModelError(string.Empty, "Su correo NO esta autorizado para registrarse");
+                    return View(model);
+                }
+
                 var user = new App_IdentityUser()
                 {
                     UserName = model.Username,
@@ -226,6 +235,13 @@ namespace HomeAssets.Controllers
             }
 
             var email = info.Principal.FindFirstValue(ClaimTypes.Email);
+
+            if (authorizedEmailRepo.GetByEmail(email) == null)
+            {
+                ModelState.AddModelError(string.Empty, "Su correo NO esta autorizado para registrarse");
+                return View("Login", model);
+            }
+
             App_IdentityUser user;
 
             if (email != null)

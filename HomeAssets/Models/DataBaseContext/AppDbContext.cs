@@ -12,6 +12,7 @@ namespace HomeAssets.Models.DataBaseContext
         }
 
         public DbSet<HomeService> HomeServices { get; set; }
+        public DbSet<AuthorizedEmail> AuthorizedEmails { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

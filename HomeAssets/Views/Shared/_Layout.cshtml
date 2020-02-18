@@ -97,7 +97,10 @@
                                 {
                                     <a class="dropdown-item" asp-action="ListUsers" asp-controller="Administration">Usuarios</a>
                                 }
-
+                                @if ((await authorizationService.AuthorizeAsync(User, "AccountManagers")).Succeeded)
+                                {
+                                    <a class="dropdown-item" asp-action="AuthorizedEmails" asp-controller="Administration">Correos Autorizados</a>
+                                }
                                 <a class="dropdown-item" asp-action="ChangePassword" asp-controller="Account">Contraseña</a>
                             </div>
                         </li>

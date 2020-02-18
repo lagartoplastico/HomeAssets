@@ -13,18 +13,19 @@ namespace HomeAssets.Models.Attributes
             validVendors = new List<string>()
             {
                 "mailinator.com",
+                "simulator.amazonses.com",
                 "gmail.com",
                 "outlook.com",
                 "hotmail.com",
-                "simulator.amazonses.com",
-                "jdevops.xyz"
+                "yahoo.com",
+                "protonmail.com"
             };
 
             ErrorMessage = "Dominios validos: ";
 
             for (int i = 1; i < validVendors.Count(); i++)
             {
-                ErrorMessage += $"@{validVendors[i]} ";
+                ErrorMessage += $"@{validVendors[i]}, ";
             }
         }
 
@@ -36,7 +37,7 @@ namespace HomeAssets.Models.Attributes
             {
                 return true;
             }
-            else return false;
+            return false;
         }
     }
 }

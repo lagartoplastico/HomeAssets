@@ -14,10 +14,12 @@ namespace HomeAssets.Controllers
     public class AdministrationController : Controller
     {
         private readonly UserManager<App_IdentityUser> userManager;
+        private readonly IAuthorizedEmailRepo authorizedEmailRepository;
 
-        public AdministrationController(UserManager<App_IdentityUser> userManager)
+        public AdministrationController(UserManager<App_IdentityUser> userManager, IAuthorizedEmailRepo authorizedEmailRepository)
         {
             this.userManager = userManager;
+            this.authorizedEmailRepository = authorizedEmailRepository;
         }
 
         public IActionResult ListUsers()
@@ -128,7 +130,7 @@ namespace HomeAssets.Controllers
                     ClaimValue = claim.Value
                 };
 
-                if (existingUserClaims.Any(c => (c.Type == claim.Type && c.Value==claim.Value)))
+                if (existingUserClaims.Any(c => (c.Type == claim.Type && c.Value == claim.Value)))
                 {
                     userClaim.IsSelected = true;
                 }
@@ -167,6 +169,63 @@ namespace HomeAssets.Controllers
             }
 
             return RedirectToAction("EditUser", new { id = model.UserId });
+        }
+
+        [HttpGet, Authorize(Policy = "AccountManagers")]
+        public IActionResult AuthorizedEmails()
+        {
+            var model = new AuthorizedEmails_vmodel();
+            if (authorizedEmailRepository.GetAllAuthorizedEmails().Any())
+            {
+                foreach (var authorizeEmail in authorizedEmailRepository.GetAllAuthorizedEmails())
+                {
+                    model.AlreadyAuthorizedEmails.Add(authorizeEmail.EmailAddress);
+                }
+            }
+            return View(model);
+        }
+
+        [HttpPost, Authorize(Policy = "AccountManagers")]
+        public IActionResult DeleteAuthorizedEmails(string email)
+        {
+            if (email!=null)
+            {
+                authorizedEmailRepository.RemoveAuthorizedEmail(email);
+            }
+            return RedirectToAction("AuthorizedEmails");
+        }
+
+        [HttpGet, Authorize(Policy = "AccountManagers")]
+        public IActionResult AuthorizeAnEmail()
+        {
+            return View();
+        }
+
+        [HttpPost, Authorize(Policy = "AccountManagers")]
+        public IActionResult AuthorizeAnEmail(AuthorizeAnEmail_vmodel model)
+        {
+            if (ModelState.IsValid)
+            {
+                if (authorizedEmailRepository.GetByEmail(model.Email) == null)
+                {
+                    authorizedEmailRepository.AddAuthorizedEmail(model.Email);
+                }
+                return RedirectToAction("AuthorizedEmails");
+            }
+            return View(model);
+        }
+
+        [AcceptVerbs("Get", "Post")]
+        public IActionResult IsEmailAlreadyAuthorized(string email)
+        {
+            if (authorizedEmailRepository.GetByEmail(email) == null)
+            {
+                return Json(true);
+            }
+            else
+            {
+                return Json($"El correo '{email}' ya está autorizado para registrarse");
+            }
         }
     }
 }

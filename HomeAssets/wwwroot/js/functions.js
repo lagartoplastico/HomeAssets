@@ -10,19 +10,19 @@ function confirmDelete(uniqueId, isDeleteClicked) {
         $('#' + "confirmDeleteSpan_" + lastUniqueId).hide()
     }
 
-    var delelteSpan = "deleteSpan_" + uniqueId;
+    var deleteSpan = "deleteSpan_" + uniqueId;
     var confirmDeleteSpan = "confirmDeleteSpan_" + uniqueId
     var editLink = "editLink_" + uniqueId
     var backLink = "backLink_" + uniqueId
 
     if (isDeleteClicked) {
-        $('#' + delelteSpan).hide()
+        $('#' + deleteSpan).hide()
         $('#' + editLink).hide()
         $('#' + backLink).hide()
 
         $('#' + confirmDeleteSpan).show()
     } else {
-        $('#' + delelteSpan).show()
+        $('#' + deleteSpan).show()
         $('#' + editLink).show()
         $('#' + backLink).show()
 

@@ -92,6 +92,7 @@ namespace HomeAssets
 
             //services.AddSingleton<IHomeServiceRepo, MockHomeServiceRepo>();
             services.AddScoped<IHomeServiceRepo, NpgsqlHomeServiceRepo>();
+            services.AddScoped<IAuthorizedEmailRepo, NpgsqlAuthorizedEmailRepo>();
             services.AddTransient<IMailService, EmailService>();
             services.AddSingleton<DataProtectionPurposeStrings>();
         }
