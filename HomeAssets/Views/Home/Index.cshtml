@@ -4,66 +4,66 @@
 
 <h1 class="mt-3" style="font-family:Arial">Servicios:</h1>
 <div class="row justify-content-center">
-    <div class="col-sm-12 card-deck justify-content-center">
+    <div class="col-sm-12 col-md-10 col-lg-8 text-center">
         @foreach (string serviceType in Enum.GetNames(typeof(ServiceTypes)))
         {
-            <a asp-controller="home" asp-action="DetailsByServiceType" asp-route-type="@serviceType">
-                <div class="card m-2" style="min-width: 11rem; max-width: 11rem; min-height: 12rem; max-height: 12rem;">
+            <a class="d-inline-flex" style="text-decoration:none;"
+               asp-controller="home" asp-action="DetailsByServiceType" asp-route-type="@serviceType">
+                <div class="card m-1" style="max-width: 8rem; min-height: 9rem;">
                     @switch (serviceType)
                     {
                         case "Internet":
-                            <img src="~/images/internet.png" class="card-img-top" height="140" />
+                            <img src="~/images/internet.png" class="card-img-top" height="110" />
                             break;
                         case "Agua":
-                            <img src="~/images/agua.png" class="card-img-top" height="140" />
+                            <img src="~/images/agua.png" class="card-img-top" height="110" />
                             break;
                         case "Energia_Electrica":
-                            <img src="~/images/eElec.png" class="card-img-top" height="140" />
+                            <img src="~/images/eElec.png" class="card-img-top" height="110" />
                             break;
                         case "Gas_Domiciliario":
-                            <img src="~/images/gDomic.png" class="card-img-top" height="140" />
+                            <img src="~/images/gDomic.png" class="card-img-top" height="110" />
                             break;
                     }
 
-                    <div class="card-body text-center text-info">
+                    <div class="card-body text-center text-info pt-2 p-0">
                         @if (serviceType.Split('_').Count() > 1)
                         {
-                            <h4 style="font-size:large; font-family:Calibri;">@serviceType.Split('_')[0] @serviceType.Split('_')[1]</h4>
+                            <h4 class="m-0" style="font-size:large; font-family:Calibri;">@serviceType.Split('_')[0] @serviceType.Split('_')[1]</h4>
                         }
                         else
                         {
-                            <h4 style="font-size:large; font-family:Calibri;">@serviceType</h4>
+                            <h4 class="m-0" style="font-size:large; font-family:Calibri;">@serviceType</h4>
                         }
                     </div>
                 </div>
             </a>
         }
     </div>
-    <div class="col-sm-0 col-md-1"></div>
 </div>
 
 <div class="row">
-    <div class="col-6">
+    <div class="col-sm-12 col-lg-6">
         <h1 class="mt-2" style="font-family:Arial">A nombre de:</h1>
         <div class="list-group">
             @foreach (string member in Enum.GetNames(typeof(Members)))
             {
-                <a class="list-group-item text-info" asp-controller="Home" asp-action="DetailsByMember"
-                   asp-route-member="@member">
-                    <h4 style="font-size:large; font-family:Calibri;">@member</h4>
+                <a class="list-group-item text-info py-2" asp-controller="Home" asp-action="DetailsByMember"
+                   asp-route-member="@member" style="text-decoration:none;">
+                    <h4 class="m-0" style="font-size:x-large; font-family:Calibri;">@member</h4>
                 </a>
             }
         </div>
     </div>
 
-    <div class="col-6">
+    <div class="col-sm-12 col-lg-6">
         <h1 class="mt-2" style="font-family:Arial">Ubicación:</h1>
         <div class="list-group">
             @foreach (string location in Enum.GetNames(typeof(Locations)))
             {
-                <a class="list-group-item text-info" asp-controller="Home" asp-action="DetailsByLocation"
-                   asp-route-location="@location">
-                    <h4 style="font-size:large; font-family:Calibri;">@location</h4>
+                <a class="list-group-item text-info py-2" asp-controller="Home" asp-action="DetailsByLocation"
+                   asp-route-location="@location" style="text-decoration:none;">
+                    <h4 class="m-0" style="font-size:x-large; font-family:Calibri;">@location</h4>
                 </a>
             }
         </div>

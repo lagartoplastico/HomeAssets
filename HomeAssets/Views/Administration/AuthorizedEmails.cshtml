@@ -16,16 +16,19 @@
                 <form class="mt-3" enctype="multipart/form-data" method="post"
                       asp-controller="Administration" asp-action="DeleteAuthorizedEmails" asp-route-email="@Model.AlreadyAuthorizedEmails[i]">
 
+                    <h2 class="text-body" style="font-size:large; color:darkslategrey">
+                        🡆 @Model.AlreadyAuthorizedEmails[i].Split('@')[0]<b style="color:green;">@@</b>@Model.AlreadyAuthorizedEmails[i].Split('@')[1]
+                    </h2>
                     <span id="deleteSpan_@i">
                         <a href="#" class="btn btn-danger p-0 mb-1" onclick="confirmDelete('@i', true)" style="width: 100px; height:auto;">Borrar</a>
                     </span>
                     <span class="mt-1" id="confirmDeleteSpan_@i" style="display:none;">
-                        <span class="text-danger">¿Borrar correo?</span>
+                        <span class="text-danger font-weight-bolder">¿Borrar correo?</span>
                         <button type="submit" class="btn btn-danger p-1" style="width: 48px;">Si</button>
                         <a href="#" class="btn btn-primary p-1" onclick="confirmDelete('@i', false)"
                            style="width: 48px;">No</a>
                     </span>
-                    <span class="text-body mb-1" style="font-size:large;">--> @Model.AlreadyAuthorizedEmails[i]</span>
+                    <hr />
                 </form>
 
             }

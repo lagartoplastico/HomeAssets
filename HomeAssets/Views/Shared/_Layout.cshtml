@@ -45,7 +45,7 @@
 </head>
 <body>
     <div class="container">
-        <nav class="navbar navbar-expand-sm bg-light navbar-light">
+        <nav class="navbar navbar-expand-sm bg-light navbar-light" style="font-size:large;">
             @if (signInManager.IsSignedIn(User) && (await authorizationService.AuthorizeAsync(User, "ServiceViewers")).Succeeded)
             {
                 <a class="navbar-brand" asp-controller="home" asp-action="index">
@@ -107,9 +107,9 @@
 
                         <li class="nav-item">
                             <form class="m-0" asp-controller="Account" asp-action="Logout" method="post">
-                                <button class="nav-link btn btn-link border-0" type="submit" style="width:auto">
+                                <button class="nav-link btn btn-link border-0" type="submit" style="width:auto;">
                                     Logout:
-                                    <p class="d-inline font-weight-bold font-italic">
+                                    <p class="d-inline font-weight-bold font-italic" style="color:black;">
                                         @User.Identity.Name
                                     </p>
                                 </button>
