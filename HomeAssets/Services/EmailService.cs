@@ -23,7 +23,7 @@ namespace HomeAssets.Services
         public void SendEmail(string toEmail, string subject, string body)
         {
             MailMessage message = new MailMessage();
-            message.IsBodyHtml = false;
+            message.IsBodyHtml = true;
             message.From = new MailAddress(settings.From, settings.Name);
             message.To.Add(new MailAddress(toEmail));
             message.Subject = subject;

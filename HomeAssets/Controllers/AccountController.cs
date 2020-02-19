@@ -64,9 +64,11 @@ namespace HomeAssets.Controllers
                     var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
                     var confirmationLink = Url.Action("ConfirmEmail", "Account",
                                                       new { userId = user.Id, token }, Request.Scheme);
-                    string message = $"Haga click en el siguiente enlace para confirmar su correo electrónico:\n\n {confirmationLink}";
+                    string message = HtmlEmailTemplate.CreateHtmlBody(user.UserName, "Haga click para verificar su cuenta de correo electrónico:",
+                                                                      confirmationLink, "Verificar Correo Electrónico");
 
-                    mailService.SendEmail(user.Email, "Confirmación de correo electrónico", message);
+                    mailService.SendEmail(user.Email, "Verificación de correo electrónico", message);
+
                     logger.Log(LogLevel.Information, $"Se envio el token de confirmacion de email para el usuario {user.UserName}");
 
                     if (signInManager.IsSignedIn(User))
@@ -301,11 +303,10 @@ namespace HomeAssets.Controllers
                     var confirmationLink = Url.Action("ConfirmEmail", "Account",
                                                       new { userId = user.Id, token }, Request.Scheme);
 
-                    string message = $"Haga click en el siguiente enlace para confirmar su correo electrónico:" +
-                                     $"\n{confirmationLink}";
+                    string message = HtmlEmailTemplate.CreateHtmlBody(user.UserName, "Haga click para verificar su cuenta de correo electrónico:",
+                                                                           confirmationLink, "Verificar Correo Electrónico");
 
-                    mailService.SendEmail(user.Email, "Confirmación de correo electrónico", message);
-                    logger.Log(LogLevel.Information, $"Se envio el token de confirmacion de email para el usuario {user.UserName}");
+                    mailService.SendEmail(user.Email, "Verificación de correo electrónico", message);
                 }
 
                 await userManager.AddLoginAsync(user, info);
@@ -363,10 +364,11 @@ namespace HomeAssets.Controllers
                     var token = await userManager.GeneratePasswordResetTokenAsync(user);
                     var passwordResetLink = Url.Action("ResetPassword", "Account", new { email = model.Email, token }, Request.Scheme);
 
-                    string message = $"Para restablecer su contraseña haga click en el siguiente enlace:" +
-                                     $"\n{passwordResetLink}";
+                    string message = HtmlEmailTemplate.CreateHtmlBody(user.UserName, "Haga click para restablecer su contraseña:",
+                                                                           passwordResetLink, "Verificar Correo Electrónico");
 
-                    mailService.SendEmail(model.Email, "Restablecer su contraseña", message);
+                    mailService.SendEmail(user.Email, "Restablecer su contraseña", message);
+
                     logger.Log(LogLevel.Information, $"Se envio el token de restablecimiento de contraseña para el usuario {user.UserName}");
 
                     return View("ForgotPasswordConfirmation");
