@@ -10,7 +10,7 @@ services:
         ports:
             - "55342:5432"
         volumes: 
-            - ./init_schema.sh:/docker-entrypoint-initdb.d/1-init_schema.sh
+            - ./init_schema.sql:/docker-entrypoint-initdb.d/1-init_schema.sql
             - dbpostgres:/var/lib/postgresql/data
         networks:
             - net1
@@ -33,9 +33,14 @@ services:
             - ASPNETCORE_ENVIRONMENT=Production
             - DOTNET_RUNNING_IN_CONTAINER=true
             - DOTNET_USE_POLLING_FILE_WATCHER=1
+            - ASPNETCORE_HTTPS_PORT=443
+            - ASPNETCORE_URLS=http://*:80;https://*:443
+            - ASPNETCORE_Kestrel__Certificates__Default__Path=/root/SSL/${KESTREL_CERT_NAME}
+            - ASPNETCORE_Kestrel__Certificates__Default__Password=${KESTREL_CERT_PASS}
 
         volumes:
             - ./DPkeys:/root/.aspnet/DataProtection-Keys
+            - ./SSL:/root/SSL
         networks:
             - net1
         depends_on:

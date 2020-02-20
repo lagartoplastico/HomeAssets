@@ -8,3 +8,8 @@ HomeAssets/wwwroot/lib/
 HomeAssets/HomeAssets.csproj.user
 *.env
 DPkeys/
+*.pfx
+*.crt
+*.pem
+*.key
+*.csr

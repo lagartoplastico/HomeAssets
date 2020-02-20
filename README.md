@@ -26,25 +26,36 @@ You need to create a ".env" file with the following environment variables:
 
 > **POSTGRES_DB**=*value3*
 
-> **CS**=Host=db;Port=5432;Database=*value3*;Username=*value1*;Password=*value2*
+> **CONNECTION_STRINGS**=Host=db;Port=5432;Database=*value3*;Username=*value1*;Password=*value2*
 
-> **From**=*value4*
+> **SENDER_ADDRESS**=*value4*
 
-> **MailServer**=*value5*
+> **SENDER_NAME**=*value5*
 
-> **MailUsername**=*value6*
+> **MAIL_SERVER**=*value6*
 
-> **MailPassword**=*value7*
+> **SMTP_PORT**=*value7*
 
-  
+> **MAIL_USERNAME**=*value8*
+
+> **MAIL_PASSWORD**=*value9*
+
+> **KESTREL_CERT_NAME**=*value10*
+
+> **KESTREL_CERT_PASS**=*value11*
+
 
 ### How to fill .env:
 
 - Credentials "*value1*", "*value2*" and "*value3*" should be change by you to what you consider best secure values for the database.
 
-- "*value4*" should be a mail address inside your mailserver that you can use e.g. *username@jdevops.xyz*
+- "*value4*" should be a mail address inside your mailserver authorized to send emails e.g. *username@jdevops.xyz*
 
-- "*value5*", "*value6*" and "*value7*" are data inherent to the mail server that you will use.
+- "*value5*" The name of the sender e.g. *Pepito Perez*
+
+- "*value6*", "*value7*", "*value8*",  and "*value9*" are data inherent to the mail server that you will use.
+
+- "*value10*" is the name of the certificate used in for HTTPS. This certificate should be place in the SSL directory. "*value11*" is the certificate password.
 
   
 
@@ -60,29 +71,7 @@ You need to create a ".env" file with the following environment variables:
 
 - If you change POSTGRES_USER to a different value that is not the default postgres user, you have to replace into the init_schema.sh file the statements "Owner: postgres" to "Owner: value1". Where value1 is the value you set inside the .env file.
 
-- The example domain used in this project is jdevops.xyz. You have to update this name with an appropiate domain.
-
-- The docker-compose.yml file has a network called "mailserver_net" that references the docker network where the mail server you use runs. So, if your mail server doesn't run in the same docker ecosystem with this app erase the following lines in the docker-compose.yml file:
-
-docker-compose.yml
-
-    -mailserver_net
-    
-    mailserver_net:
-    
-    external: true
-
-  
-
-But if your mail server runs in the same docker ecosystem with this app, you have to change inside the docker-compose.yml file the name "mailserver_net" with the appropiate docker network where your mail server connects.
-
-### Add the TLS certificate and key:
-
-- Add the https certificate inside a folder called https in the root path.
-
-- If you want to read your certificate from other location, you should update the volumes part in the docker-compose.yml file.
-
-  
+- The example domain used in this project is jdevops.xyz. You have to update this name with an appropiate valid domain.
 
 ### Run with docker-compose.
 
@@ -94,4 +83,4 @@ Next, you can run the docker-compose file with the following command:
 
   
 
-And check the HomeAssets webapp in the port 80 or 443 of your browser.
+And check the HomeAssets webapp in the port 80(HTTP) or 443(HTTPS) of your browser.

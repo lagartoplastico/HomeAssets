@@ -3,11 +3,9 @@ using HomeAssets.Models.DataBaseContext;
 using HomeAssets.Models.ExtendedIdentity;
 using HomeAssets.Security;
 using HomeAssets.Services;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -57,13 +55,7 @@ namespace HomeAssets
               .AddDefaultTokenProviders()
               .AddTokenProvider<CustomEmailConfirmationTokenProvider<App_IdentityUser>>("CustomEmailConfirmationTokenProvider");
 
-            services.AddMvc(options =>
-            {
-                options.EnableEndpointRouting = false;
-
-                var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
-                options.Filters.Add(new AuthorizeFilter(policy));
-            }).AddXmlSerializerFormatters();
+            services.AddControllersWithViews();
 
             services.AddAuthentication()
                 .AddGoogle(options =>
@@ -90,7 +82,6 @@ namespace HomeAssets
                                                                          "admin1"}));
             });
 
-            //services.AddSingleton<IHomeServiceRepo, MockHomeServiceRepo>();
             services.AddScoped<IHomeServiceRepo, NpgsqlHomeServiceRepo>();
             services.AddScoped<IAuthorizedEmailRepo, NpgsqlAuthorizedEmailRepo>();
             services.AddTransient<IMailService, EmailService>();
@@ -107,11 +98,25 @@ namespace HomeAssets
             {
                 app.UseExceptionHandler("/Error");
                 app.UseStatusCodePagesWithReExecute("/Error/{0}");
+                app.UseHsts();
             }
 
+            app.UseHttpsRedirection();
+
             app.UseStaticFiles();
+
+            app.UseRouting();
+
             app.UseAuthentication();
-            app.UseMvcWithDefaultRoute();
+
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
+            });
         }
     }
 }
