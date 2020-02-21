@@ -343,7 +343,13 @@ namespace HomeAssets.Controllers
 
             var result = await userManager.ConfirmEmailAsync(user, token);
 
-            return View(result.Succeeded);
+            if (result.Succeeded)
+            {
+                await userManager.AddClaimAsync(user, new Claim("Role", "user1"));
+
+                return View(true);
+            }
+            return View(false);
         }
 
         [HttpGet, AllowAnonymous]
