@@ -1,39 +1,40 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 
 namespace HomeAssets.Models.Attributes
 {
     public class ValidEmailDomain : ValidationAttribute
     {
         private readonly List<string> validVendors;
+        private readonly List<string> validExtensions;
 
         public ValidEmailDomain()
         {
             validVendors = new List<string>()
             {
-                "mailinator.com",
-                "simulator.amazonses.com",
-                "gmail.com",
-                "outlook.com",
-                "hotmail.com",
-                "yahoo.com",
-                "protonmail.com"
+                "gmail",
+                "outlook",
+                "hotmail",
+                "yahoo",
+                "protonmail",
+                "icloud"
             };
 
-            ErrorMessage = "Dominios validos: ";
-
-            for (int i = 1; i < validVendors.Count(); i++)
+            validExtensions = new List<string>()
             {
-                ErrorMessage += $"@{validVendors[i]}, ";
-            }
+                "com",
+                "es"
+            };
+
+            ErrorMessage = "Correos validos: Gmail, Outlook. Hotmail, Yahoo, iCloud y Protonmail";
         }
 
         public override bool IsValid(object value)
         {
-            string valueVendor = value.ToString().Split('@')[1].ToLower();
+            string[] valueDomain = value.ToString().Split('@')[1].ToLower().Split('.');
 
-            if (validVendors.Find(vendor => vendor == valueVendor) != null)
+            if (validExtensions.Find(extension => extension == valueDomain[1]) != null &&
+                validVendors.Find(vendor => vendor == valueDomain[0]) != null)
             {
                 return true;
             }
