@@ -55,7 +55,7 @@ You need to create a ".env" file with the following environment variables:
 
 - "*value6*", "*value7*", "*value8*",  and "*value9*" are data inherent to the mail server that you will use.
 
-- "*value10*" is the name of the certificate used in for HTTPS. This certificate should be place in the SSL directory. "*value11*" is the certificate password.
+- "*value10*" is the name of the certificate used in for HTTPS (The cert has to be a .pfx cert for kestrel to use it). This certificate should be place in the SSL directory (you can change this in the docker-compose.yml file). "*value11*" is the certificate password.
 
   
 
