@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace HomeAssets.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20200217181952_authEmails")]
-    partial class authEmails
+    [Migration("20200227215548_initial2")]
+    partial class initial2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -111,16 +111,16 @@ namespace HomeAssets.Migrations
                         {
                             Id = "suseradm-su01-9283-7465-k01joannes07",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "f0f60693-14ec-4bdb-8a62-63a7c9b0ee3a",
+                            ConcurrencyStamp = "365bb6e3-0b19-4b9e-b373-6925c641ba80",
                             Email = "su@jdevops.xyz",
                             EmailConfirmed = true,
                             Gender = 0,
                             LockoutEnabled = true,
                             NormalizedEmail = "SU@jdevops.xyz",
                             NormalizedUserName = "SUPERUSER",
-                            PasswordHash = "AQAAAAEAACcQAAAAEAZ6kxmhtdvh0/8mImNpvlEyEipHT68wTuTQmUL0GDtuPhecFD9JmFr+fgd9bULQIQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEPJnrMnK8LJ5wp+itd9wB8lmXAAWUl084k5mqJG3AxwuRkuzqRli5wd5EerWIjaKFw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "88e4ad8d-05c9-4fb2-801a-c764b887a07f",
+                            SecurityStamp = "e8177d30-c05f-44ec-b3f9-cdf3fd7bed8c",
                             TwoFactorEnabled = false,
                             UserName = "superuser"
                         });
@@ -147,7 +147,8 @@ namespace HomeAssets.Migrations
 
                     b.Property<string>("PaymentId")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("character varying(24)")
+                        .HasMaxLength(24);
 
                     b.Property<int>("ServiceType")
                         .HasColumnType("integer");

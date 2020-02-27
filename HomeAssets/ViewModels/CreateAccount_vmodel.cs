@@ -21,7 +21,7 @@ namespace HomeAssets.ViewModels
         public string Email { get; set; }
 
         [Display(Name = "Genero")]
-        public Genders Gender { get; set; } = Genders.Ninguno;
+        public Genders Gender { get; set; } = Genders.Otro;
 
         [Required, Display(Name = "Contraseña")]
         [DataType(DataType.Password)]

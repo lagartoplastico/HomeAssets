@@ -2,7 +2,7 @@
 {
     public enum Genders
     {
-        Ninguno,
+        Otro,
         Mujer,
         Hombre
     }

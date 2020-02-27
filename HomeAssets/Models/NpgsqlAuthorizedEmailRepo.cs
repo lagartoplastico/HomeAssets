@@ -19,7 +19,7 @@ namespace HomeAssets.Models
             AuthorizedEmail newAuthEmail = new AuthorizedEmail()
             {
                 EmailAddress = newAuthorizedEmail,
-                DateOfCreation = DateTime.Now
+                DateOfCreation = DateTime.UtcNow.Date
             };
             context.AuthorizedEmails.Add(newAuthEmail);
             context.SaveChanges();

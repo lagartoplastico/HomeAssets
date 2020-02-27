@@ -11,7 +11,7 @@ namespace HomeAssets.Models
         public int id { get; set; }
         [Required, EmailAddress]
         public string EmailAddress { get; set; }
-        [Required]
+        [Required, DataType(DataType.Date)]
         public DateTime DateOfCreation { get; set; }
     }
 }

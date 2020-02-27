@@ -17,10 +17,11 @@ namespace HomeAssets.ViewModels
         [Required, Display(Name = "A nombre de")]
         public Members LeasedTo { get; set; }
 
-        [Required, Display(Name = "Criterio de pago")]
+        [Required, Display(Name = "Criterio")]
         public PaymentCriterias PaymentCriteria { get; set; }
 
-        [Required, Display(Name = "Código de pago")]
+        [Required, Display(Name = "Valor de criterio")]
+        [MaxLength(24, ErrorMessage = "El codigo debe tener como maximo 24 caracteres")]
         public string PaymentId { get; set; }
     }
 }

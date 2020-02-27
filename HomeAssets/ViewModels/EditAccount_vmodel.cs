@@ -28,7 +28,7 @@ namespace HomeAssets.ViewModels
         public string Email { get; set; }
 
         [Display(Name = "Genero")]
-        public Genders Gender { get; set; } = Genders.Ninguno;
+        public Genders Gender { get; set; } = Genders.Otro;
 
         public IList<string> Claims { get; set; }
     }

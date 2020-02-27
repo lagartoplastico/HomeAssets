@@ -26,6 +26,7 @@ namespace HomeAssets.Models
         public PaymentCriterias PaymentCriteria { get; set; }
 
         [Required]
+        [MaxLength(24)]
         public string PaymentId { get; set; }
     }
 }
