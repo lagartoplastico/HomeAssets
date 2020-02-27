@@ -62,9 +62,8 @@ namespace HomeAssets.Controllers
                 if (result.Succeeded)
                 {
                     var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
-                    var confirmationLink = Url.Action("ConfirmEmail", "Account",
-                                                      new { userId = user.Id, token }, Request.Scheme);
-                    string message = HtmlEmailTemplate.CreateHtmlBody(user.UserName, "Haga click para verificar su cuenta de correo electrónico:",
+                    var confirmationLink = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, token }, Request.Scheme);
+                    string message = HtmlEmailTemplate.CreateHtmlBody(user.UserName, "Has click para verificar su cuenta de correo electrónico:",
                                                                       confirmationLink, "Verificar Correo Electrónico");
 
                     mailService.SendEmail(user.Email, "Verificación de correo electrónico", message);
@@ -303,7 +302,7 @@ namespace HomeAssets.Controllers
                     var confirmationLink = Url.Action("ConfirmEmail", "Account",
                                                       new { userId = user.Id, token }, Request.Scheme);
 
-                    string message = HtmlEmailTemplate.CreateHtmlBody(user.UserName, "Haga click para verificar su cuenta de correo electrónico:",
+                    string message = HtmlEmailTemplate.CreateHtmlBody(user.UserName, "Has click para verificar su cuenta de correo electrónico:",
                                                                            confirmationLink, "Verificar Correo Electrónico");
 
                     mailService.SendEmail(user.Email, "Verificación de correo electrónico", message);
@@ -341,6 +340,11 @@ namespace HomeAssets.Controllers
                 return View("NotFound", $"El id de usuario es invalido");
             }
 
+            if (await userManager.IsEmailConfirmedAsync(user))
+            {
+                return View(false);
+            }
+
             var result = await userManager.ConfirmEmailAsync(user, token);
 
             if (result.Succeeded)
@@ -370,7 +374,7 @@ namespace HomeAssets.Controllers
                     var token = await userManager.GeneratePasswordResetTokenAsync(user);
                     var passwordResetLink = Url.Action("ResetPassword", "Account", new { email = model.Email, token }, Request.Scheme);
 
-                    string message = HtmlEmailTemplate.CreateHtmlBody(user.UserName, "Haga click para restablecer su contraseña:",
+                    string message = HtmlEmailTemplate.CreateHtmlBody(user.UserName, "Has click para restablecer su contraseña:",
                                                                            passwordResetLink, "Verificar Correo Electrónico");
 
                     mailService.SendEmail(user.Email, "Restablecer su contraseña", message);
@@ -414,9 +418,8 @@ namespace HomeAssets.Controllers
                     }
                     foreach (var error in result.Errors)
                     {
-                        logger.LogWarning($"reset password for user {user.Email}::: {error.Description}");
+                        ModelState.AddModelError(string.Empty, error.Description);
                     }
-                    ModelState.AddModelError(string.Empty, "error al restablecer la contraseña");
                     return View(model);
                 }
                 return View("ResetPasswordConfirmation");

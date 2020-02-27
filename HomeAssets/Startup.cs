@@ -28,7 +28,7 @@ namespace HomeAssets
             services.Configure<SmtpSettings>(config.GetSection("SmtpSettings"));
             services.Configure<DataProtectionTokenProviderOptions>(options =>
             {
-                options.TokenLifespan = TimeSpan.FromMinutes(15);
+                options.TokenLifespan = TimeSpan.FromMinutes(10);
             });
             services.Configure<CustomEmailConfirmationTokenProviderOptions>(options =>
             {
